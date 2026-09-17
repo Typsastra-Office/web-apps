@@ -261,8 +261,8 @@ define([
 
                 this.langMenu = new Common.UI.MenuSimple({
                     cls: 'lang-menu shifted-right',
-                    style: 'margin-top:-5px;',
-                    restoreHeight: 285,
+                    style: 'margin-top:-5px; width:280px; max-width:calc(100vw - 16px);',
+                    restoreHeight: 180,
                     itemTemplate: _.template([
                         '<a id="<%= id %>" tabindex="-1" type="menuitem" langval="<%= value %>" class="<% if (checked) { %> checked <% } %>">',
                             '<div>',
