@@ -1,0 +1,127 @@
+MiSans Khmer — Font License
+
+The MiSans Khmer font bundled in this directory
+(fonts/MiSansKhmer-Regular.woff2, fonts/MiSansKhmer-Bold.woff2) is part of the
+MiSans Global font family, Copyright (C) Xiaomi Inc. It is used in Typsastra
+Office for rendering Khmer script in the application user interface.
+
+MiSans fonts are distributed by Xiaomi as global free commercial-use fonts and
+may be embedded in software, provided that the software states that MiSans is
+used, that the fonts are not adapted or redeveloped, that the font software is
+not redistributed or sold on its own, and that this notice and the license
+agreement are retained with any copies.
+
+The font files here are unmodified copies of the official Xiaomi release
+(WOFF2, Regular and Bold weights) from https://hyperos.mi.com/font/.
+
+--------------------------------------------------------------------------
+MiSans Font Intellectual Property License Agreement (English)
+--------------------------------------------------------------------------
+
+The MiSans Font Intellectual Property License Agreement (hereinafter referred
+to as the "Agreement") is a legal agreement between You and Xiaomi Inc.
+(hereinafter referred to as "Xiaomi" or "Licensor") regarding the installation
+and use of MiSans fonts (hereinafter referred to "MiSans" or "MiSans Fonts").
+You shall accept all of the terms and conditions in the Agreement before using
+all or any part of MiSans. By installing and using MiSans, You agree to be
+bound by all of the terms of this Agreement. Otherwise, You shall not install
+and/or use MiSans, and shall immediately destroy and delete all MiSans font
+packages.
+
+1. Definition
+
+1.1 "MiSans Fonts" refers to the font software clearly marked as "MiSans" that
+is provided by Licensor under this Agreement, including but not limited to
+source code, database, and documentation in various forms, formats, and media.
+
+1.2 The term "User" or "You" represents the natural person, legal person, or
+unincorporated organization exercising the license granted in this Agreement.
+The User shall install and use MiSans according to this Agreement.
+
+1.3 "Use" refers to the act of installing, downloading, copying, exhibiting, or
+otherwise benefiting from the use of MiSans.
+
+2. Authorization and Permission
+
+According to the terms and conditions of this Agreement, Licensor hereby grants
+You a non-transferable, non-exclusive, royalty-free, revocable, and global
+copyright license to use the MiSans fonts in accordance with this Agreement,
+provided that the following conditions are met:
+
+1) You shall specifically indicate in the Software that You are using MiSans
+   fonts.
+2) You shall not adapt or redevelop MiSans fonts or any of their individual
+   components.
+3) You shall not individually rent, sublicense, give, loan, or further
+   distribute the MiSans fonts or their components, or any copies thereof, nor
+   shall you redistribute or sell them. This restriction does not apply to any
+   other work that You create using MiSans fonts. For example, if You use MiSans
+   fonts to create promotional materials, logos, applications (Apps), etc., You
+   shall have the right to distribute or sell that work.
+4) You shall retain the copyright notice and this Agreement in any copies of
+   MiSans fonts.
+5) You shall not use MiSans fonts for any illegal purposes.
+
+3. Intellectual Property Rights
+
+MiSans Font Software and the fonts contained therein and any copies that Xiaomi
+authorizes You to make are the intellectual products of Xiaomi, and the
+structure, organization, and code of this font software and all information
+related to this font software are the trade secrets of Xiaomi. This font
+software and the fonts contained therein are protected by the Copyright Law of
+the People's Republic of China, the Regulations on the Protection of Computer
+Software, and other intellectual property laws and regulations as well as
+international conventions and treaties. Xiaomi does not grant You any other
+intellectual property rights related to MiSans except those expressly granted
+in this Agreement.
+
+4. Disclaimer
+
+4.1 MiSans is provided "as is". The Licensor makes no express, implied, or
+statutory warranties with respect to this Agreement, including, but not limited
+to, warranties of merchantability, ownership, fitness for a particular purpose,
+or non-infringement of copyrights, patents, trademarks, or other rights.
+
+4.2 In no event shall Licensor and its affiliates be liable for any direct,
+indirect, special, incidental, or consequential damages (including, but not
+limited to, the purchase of substitute goods or services). Whether under the
+contract theory, the tort (including negligence) theory, the strict liability
+theory, or other legal theories, Licensor and its affiliates shall not be
+liable for any form of business interruption, or loss of service data or
+profits resulting from the use of or inability to use MiSans fonts, even if
+Licensor and its affiliates have been advised of the possibility of such
+damages.
+
+4.3 You shall expressly assume all responsibility and risk for using MiSans
+fonts. If it cannot be proven that MiSans is subject to any defect, You shall be
+responsible for all necessary services, repairs, or rectifications at full
+cost.
+
+5. License Termination
+
+If You violate the terms of this Agreement, Xiaomi may terminate the Agreement,
+withdraw the license, and hold You liable for the corresponding legal
+responsibility at any time.
+
+6. Applicable Laws and Jurisdiction
+
+The Agreement shall be governed by the laws of the People's Republic of China.
+In case of any dispute between You and Xiaomi regarding this Agreement, both You
+and Xiaomi shall have the right to file a lawsuit at Beijing Haidian District
+People's Court.
+
+7. General Provisions
+
+7.1 This is the most recent license agreement between Xiaomi and You regarding
+the MiSans Software and the fonts contained therein, and it shall supersede all
+prior representations, undertakings, publicity, or license agreements relating
+to this font software.
+
+7.2 If You have any questions regarding the Agreement or wish to learn any
+information regarding the licensing of the Font, please contact Xiaomi as
+follows:
+
+Xiaomi Inc.
+Address: Xiaomi Campus, No. 33 Xi erqi Middle Road, Haidian District,
+Beijing, 100085, China
+Email: mengfanqi@xiaomi.com

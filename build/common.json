@@ -94,6 +94,12 @@
                 "src": "../apps/common/main/resources/themes/themes.json",
                 "dest": "../deploy/web-apps/apps/common/main/resources/themes/themes.json"
             },
+            "fonts": {
+                "expand": true,
+                "cwd": "../apps/common/main/resources/fonts",
+                "src": "*",
+                "dest": "../deploy/web-apps/apps/common/main/resources/fonts"
+            },
             "scripts": {
                 "files": [
                     {

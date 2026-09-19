@@ -16,4 +16,5 @@
 * XRegExp 3.0.0 ([MIT License](https://github.com/slevithan/xregexp/blob/master/LICENSE))
 * MobX 6.13.6 ([MIT License](https://github.com/mobxjs/mobx/blob/main/LICENSE))
 * SVG sprite loader 6.0.11 ([MIT License](https://github.com/JetBrains/svg-sprite-loader/blob/master/LICENSE))
+* MiSans Khmer ([MiSans Font Intellectual Property License Agreement](apps/common/main/resources/fonts/MiSans-Khmer-LICENSE.txt)) — Copyright (C) Xiaomi Inc. Used for Khmer script in the application UI.
 
