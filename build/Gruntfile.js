@@ -113,7 +113,7 @@ module.exports = function(grunt) {
                     to: _encode(process.env.HELP_CENTER_WEB_PE) || _encode(process.env.HELP_CENTER_WEB_EDITORS) || 'https://helpcenter.onlyoffice.com/userguides/docs-pe.aspx'
                 }, {
                     from: /\{\{DEFAULT_LANG\}\}/g,
-                    to: _encode(process.env.DEFAULT_LANG) || 'en'
+                    to: _encode(process.env.DEFAULT_LANG) || 'km'
                 }, {
                     from: /\{\{SUGGEST_URL\}\}/g,
                     to: _encode(process.env.SUGGEST_URL) || 'https://feedback.onlyoffice.com/forums/966080-your-voice-matters?category_id=519084'
@@ -415,7 +415,7 @@ module.exports = function(grunt) {
 
             replace: {
                 writeVersion: {
-                    src: ['../deploy/web-apps/apps/common/main/lib/**/*.js'],
+                    src: ['../deploy/web-apps/apps/common/main/lib/**/*.js', '../deploy/web-apps/apps/common/locale.js'],
                     overwrite: true,
                     replacements: [{
                         from: /\{\{PRODUCT_VERSION\}\}/g,
