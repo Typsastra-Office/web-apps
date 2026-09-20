@@ -919,7 +919,8 @@ define([], function () {
                 menuStyle   : 'min-width:100%;',
                 data        : [
                     { value: Asc.c_oNumeralType.arabic, displayValue: this.txtArabic },
-                    { value: Asc.c_oNumeralType.hindi, displayValue: this.txtHindi }
+                    { value: Asc.c_oNumeralType.hindi, displayValue: this.txtHindi },
+                    { value: Asc.c_oNumeralType.khmer, displayValue: this.txtKhmer }
                     // { value: Asc.c_oNumeralType.context, displayValue: this.txtContext }
                 ],
                 dataHint: '2',
@@ -1304,6 +1305,7 @@ define([], function () {
         txtKhmerLineBreakViterbi: 'Khmer Viterbi segmenter',
         txtKhmerPolicyOfficial: 'Visual + official',
         txtKhmerPolicyPractical: 'Visual + practical',
+        txtKhmer: 'Khmer',
         textAlignGuides: 'Alignment Guides',
         strCoAuthMode: 'Co-editing mode',
         strFast: 'Fast',
