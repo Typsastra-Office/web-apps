@@ -316,10 +316,13 @@ define([
                     page_edit_text = value.asc_getEditLock();
                 }
             }
-            if (page_edit_text && me.documentHolder.btnEditText && me.documentHolder.btnEditText.cmpEl) {
-                me.documentHolder.btnEditText.cmpEl.parent().hide().prev('.separator').hide();
-            } else if (!page_edit_text && me.documentHolder.btnEditText && me.documentHolder.btnEditText.cmpEl){
-                me.documentHolder.btnEditText.cmpEl.parent().show().prev('.separator').show();
+            if (me.documentHolder.btnEditText && me.documentHolder.btnEditText.cmpEl) {
+                // "Edit Text" (PDF page text recognition) is hidden unless supported.
+                if (page_edit_text || !(this.mode && this.mode.isEditTextSupport)) {
+                    me.documentHolder.btnEditText.cmpEl.parent().hide().prev('.separator').hide();
+                } else {
+                    me.documentHolder.btnEditText.cmpEl.parent().show().prev('.separator').show();
+                }
             }
             if (this.mode && this.mode.isEdit && this.mode.isPDFEdit) {
                 if (in_equation) {
