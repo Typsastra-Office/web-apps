@@ -1397,6 +1397,13 @@ define([
                         khmerSpellchecker.setSpellingPolicy({accuracy: 'visual', authority: value});
                 }
 
+                // Document language: detect it from the document content on load
+                // unless the user has explicitly chosen a document language.
+                var manualLanguage = Common.localStorage.getBool("settings-language-manual", false);
+                Common.Utils.InternalSettings.set("settings-language-manual", manualLanguage);
+                if (typeof this.api.asc_setAutoDetectDocumentLanguage === 'function')
+                    this.api.asc_setAutoDetectDocumentLanguage(!manualLanguage);
+
                 value = Common.localStorage.getBool("de-settings-compatible", false);
                 Common.Utils.InternalSettings.set("de-settings-compatible", value);
 

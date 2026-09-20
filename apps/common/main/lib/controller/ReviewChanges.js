@@ -1055,7 +1055,15 @@ define([
                 handler: function(result, value) {
                     if (result=='ok') {
                         var record = _.findWhere(me.langs, {'value':value});
-                        record && me.api.asc_setDefaultLanguage(record.code);
+                        if (record) {
+                            // The user chose a document language explicitly: stop
+                            // overriding it from the document content on load.
+                            Common.localStorage.setBool("settings-language-manual", true);
+                            Common.Utils.InternalSettings.set("settings-language-manual", true);
+                            if (typeof me.api.asc_setAutoDetectDocumentLanguage === 'function')
+                                me.api.asc_setAutoDetectDocumentLanguage(false);
+                            me.api.asc_setDefaultLanguage(record.code);
+                        }
                     }
                 }
             })).show();
