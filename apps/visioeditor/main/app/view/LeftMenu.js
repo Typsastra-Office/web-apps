@@ -95,21 +95,6 @@ define([
             });
             this.btnAbout.on('toggle',          this.onBtnMenuToggle.bind(this));
 
-            this.btnSupport = new Common.UI.Button({
-                action: 'support',
-                el: $markup.elementById('#left-btn-support'),
-                hint: this.tipSupport,
-                iconCls: 'btn-menu-support',
-                disabled: true
-            });
-            this.btnSupport.on('click', _.bind(function() {
-                var config = this.mode.customization;
-                config && !!config.feedback && !!config.feedback.url ?
-                    window.open(config.feedback.url) :
-                    window.open('{{SUPPORT_URL}}');
-                Common.NotificationCenter.trigger('edit:complete', this);
-            }, this));
-
             this.btnChat = new Common.UI.Button({
                 el: $markup.elementById('#left-btn-chat'),
                 hint: this.tipChat,
@@ -276,7 +261,6 @@ define([
         disableMenu: function(menu, disable) {
             this.btnSearchBar.setDisabled(false);
             this.btnAbout.setDisabled(false);
-            this.btnSupport.setDisabled(false);
             this.btnChat.setDisabled(false);
             this.btnThumbs.setDisabled(disable);
             this.setDisabledAllMoreMenuItems(false);
@@ -403,13 +387,12 @@ define([
         },
 
         setButtons: function () {
-            var allButtons = [/*this.btnSearchBar,*/ this.btnThumbs, this.btnChat, this.btnSupport, this.btnAbout];
+            var allButtons = [/*this.btnSearchBar,*/ this.btnThumbs, this.btnChat, this.btnAbout];
             Common.UI.SideMenu.prototype.setButtons.apply(this, [allButtons]);
         },
 
         tipChat     : 'Chat',
         tipAbout    : 'About',
-        tipSupport  : 'Feedback & Support',
         tipSearch   : 'Search',
         tipPlugins  : 'Plugins',
         tipPages: 'Pages',

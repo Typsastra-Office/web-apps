@@ -115,21 +115,6 @@ define([
             this.btnAbout.on('toggle',          _.bind(this.onBtnMenuToggle, this));
             this.btnAbout.on('click',           _.bind(this.onFullMenuClick, this));
 
-            this.btnSupport = new Common.UI.Button({
-                action: 'support',
-                el: $markup.elementById('#left-btn-support'),
-                hint: this.tipSupport,
-                disabled: true,
-                iconCls: 'btn-menu-support'
-            });
-            this.btnSupport.on('click', _.bind(function() {
-                var config = this.mode.customization;
-                config && !!config.feedback && !!config.feedback.url ?
-                    window.open(config.feedback.url) :
-                    window.open('{{SUPPORT_URL}}');
-                Common.NotificationCenter.trigger('edit:complete', this);
-            }, this));
-
             /** coauthoring begin **/
             this.btnComments = new Common.UI.Button({
                 el: $markup.elementById('#left-btn-comments'),
@@ -332,7 +317,6 @@ define([
             this.btnSearchBar.setDisabled(disable);
             this.btnThumbs.setDisabled(disable);
             this.btnAbout.setDisabled(disable);
-            this.btnSupport.setDisabled(disable);
             /** coauthoring begin **/
             this.btnChat.setDisabled(disable);
             /** coauthoring end **/
@@ -472,7 +456,7 @@ define([
         },
 
         setButtons: function () {
-            var allButtons = [this.btnSearchBar, this.btnThumbs, this.btnComments, this.btnChat, this.btnSupport, this.btnAbout];
+            var allButtons = [this.btnSearchBar, this.btnThumbs, this.btnComments, this.btnChat, this.btnAbout];
             Common.UI.SideMenu.prototype.setButtons.apply(this, [allButtons]);
         },
 
@@ -481,7 +465,6 @@ define([
         tipChat     : 'Chat',
         /** coauthoring end **/
         tipAbout    : 'About',
-        tipSupport  : 'Feedback & Support',
         tipSearch   : 'Search',
         tipSlides: 'Slides',
         tipPlugins  : 'Plugins',
