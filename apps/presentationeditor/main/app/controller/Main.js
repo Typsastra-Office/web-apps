@@ -953,6 +953,21 @@ define([
                     value = Common.localStorage.getBool("pe-settings-spellcheck", value);
                     Common.Utils.InternalSettings.set("pe-settings-spellcheck", value);
                 }
+
+                // Khmer text settings: segmenter engine for line breaking and spelling policy
+                var khmerValue = Common.localStorage.getItem("settings-khmer-line-break");
+                khmerValue = (khmerValue === 'viterbi') ? 'viterbi' : 'icu';
+                Common.Utils.InternalSettings.set("settings-khmer-line-break", khmerValue);
+                if (window.AscCommon && typeof window.AscCommon["setKhmerLineBreakEngine"] === 'function')
+                    window.AscCommon["setKhmerLineBreakEngine"](khmerValue);
+                khmerValue = Common.localStorage.getItem("settings-khmer-spell-policy");
+                khmerValue = (khmerValue === 'community') ? 'community' : 'official';
+                Common.Utils.InternalSettings.set("settings-khmer-spell-policy", khmerValue);
+                if (window.AscCommon && typeof window.AscCommon["getKhmerSpellchecker"] === 'function') {
+                    var khmerSpellchecker = window.AscCommon["getKhmerSpellchecker"]();
+                    if (khmerSpellchecker && typeof khmerSpellchecker["setSpellingPolicy"] === 'function')
+                        khmerSpellchecker["setSpellingPolicy"]({accuracy: 'visual', authority: khmerValue});
+                }
                 me.api.asc_setSpellCheck(value);
                 Common.NotificationCenter.trigger('spelling:turn', value ? 'on' : 'off', true); // only toggle buttons
 

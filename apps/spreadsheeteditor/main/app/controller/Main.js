@@ -1042,6 +1042,21 @@ define([
                     /** spellcheck settings end **/
                 }
 
+                // Khmer text settings: segmenter engine for line breaking and spelling policy
+                var khmerValue = Common.localStorage.getItem("settings-khmer-line-break");
+                khmerValue = (khmerValue === 'viterbi') ? 'viterbi' : 'icu';
+                Common.Utils.InternalSettings.set("settings-khmer-line-break", khmerValue);
+                if (window.AscCommon && typeof window.AscCommon["setKhmerLineBreakEngine"] === 'function')
+                    window.AscCommon["setKhmerLineBreakEngine"](khmerValue);
+                khmerValue = Common.localStorage.getItem("settings-khmer-spell-policy");
+                khmerValue = (khmerValue === 'community') ? 'community' : 'official';
+                Common.Utils.InternalSettings.set("settings-khmer-spell-policy", khmerValue);
+                if (window.AscCommon && typeof window.AscCommon["getKhmerSpellchecker"] === 'function') {
+                    var khmerSpellchecker = window.AscCommon["getKhmerSpellchecker"]();
+                    if (khmerSpellchecker && typeof khmerSpellchecker["setSpellingPolicy"] === 'function')
+                        khmerSpellchecker["setSpellingPolicy"]({accuracy: 'visual', authority: khmerValue});
+                }
+
                 value = Common.localStorage.getBool("sse-settings-smooth-scroll", true);
                 Common.Utils.InternalSettings.set("sse-settings-smooth-scroll", value);
                 this.api.asc_SetSmoothScrolling(value);

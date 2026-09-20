@@ -422,6 +422,14 @@ define([], function () {
                 '<tr class="spellcheck">',
                     '<td colspan="2"><span id="fms-chb-ignore-numbers-words"></span></td>',
                 '</tr>',
+                '<tr class="edit khmer-text">',
+                    '<td><label><%= scope.strKhmerLineBreak %></label></td>',
+                    '<td><div id="fms-cmb-khmer-line-break"></div></td>',
+                '</tr>',
+                '<tr class="edit khmer-text">',
+                    '<td><label><%= scope.strKhmerSpellPolicy %></label></td>',
+                    '<td><div id="fms-cmb-khmer-spell-policy"></div></td>',
+                '</tr>',
                 '<tr  class="edit">',
                     '<td colspan="2"><button type="button" class="btn btn-text-default" id="fms-btn-auto-correct" style="width:auto; display: inline-block;padding-right: 10px;padding-left: 10px;" data-hint="2" data-hint-direction="bottom" data-hint-offset="big"><%= scope.txtAutoCorrect %></button></div></td>',
                 '</tr>',
@@ -906,6 +914,28 @@ define([], function () {
                 dataHintOffset: 'small'
             });
 
+            this.cmbKhmerLineBreak = new Common.UI.ComboBox({
+                el: $markup.findById('#fms-cmb-khmer-line-break'),
+                cls: 'input-large',
+                menuStyle: 'dropdown',
+                editable: false,
+                data: [
+                    { value: 'icu', displayValue: this.txtKhmerLineBreakIcu },
+                    { value: 'viterbi', displayValue: this.txtKhmerLineBreakViterbi }
+                ]
+            });
+
+            this.cmbKhmerSpellPolicy = new Common.UI.ComboBox({
+                el: $markup.findById('#fms-cmb-khmer-spell-policy'),
+                cls: 'input-large',
+                menuStyle: 'dropdown',
+                editable: false,
+                data: [
+                    { value: 'official', displayValue: this.txtKhmerPolicyOfficial },
+                    { value: 'community', displayValue: this.txtKhmerPolicyPractical }
+                ]
+            });
+
             this.chDateSystem = new Common.UI.CheckBox({
                 el: $markup.findById('#fms-chb-date-1904'),
                 labelText: this.strDateFormat1904,
@@ -1088,7 +1118,26 @@ define([], function () {
             this.api = api;
         },
 
+        applyKhmerTextSettings: function() {
+            var common = window.AscCommon;
+            if (!common)
+                return;
+
+            if (typeof common["setKhmerLineBreakEngine"] === 'function')
+                common["setKhmerLineBreakEngine"](this.cmbKhmerLineBreak.getValue());
+
+            if (typeof common["getKhmerSpellchecker"] === 'function') {
+                var spellchecker = common["getKhmerSpellchecker"]();
+                if (spellchecker && typeof spellchecker["setSpellingPolicy"] === 'function')
+                    spellchecker["setSpellingPolicy"]({accuracy: 'visual', authority: this.cmbKhmerSpellPolicy.getValue()});
+            }
+        },
+
         updateSettings: function() {
+            var khmerBreak = Common.Utils.InternalSettings.get("settings-khmer-line-break");
+            this.cmbKhmerLineBreak.setValue(khmerBreak === 'viterbi' ? 'viterbi' : 'icu');
+            var khmerPolicy = Common.Utils.InternalSettings.get("settings-khmer-spell-policy");
+            this.cmbKhmerSpellPolicy.setValue(khmerPolicy === 'community' ? 'community' : 'official');
             var value = Common.Utils.InternalSettings.get("sse-settings-zoom");
             value = (value!==null) ? parseInt(value) : (this.mode.customization && this.mode.customization.zoom ? parseInt(this.mode.customization.zoom) : 100);
             var item = this.cmbZoom.store.findWhere({value: value});
@@ -1259,6 +1308,11 @@ define([], function () {
         },
 
         applySettings: function() {
+            Common.localStorage.setItem("settings-khmer-line-break", this.cmbKhmerLineBreak.getValue());
+            Common.Utils.InternalSettings.set("settings-khmer-line-break", this.cmbKhmerLineBreak.getValue());
+            Common.localStorage.setItem("settings-khmer-spell-policy", this.cmbKhmerSpellPolicy.getValue());
+            Common.Utils.InternalSettings.set("settings-khmer-spell-policy", this.cmbKhmerSpellPolicy.getValue());
+            this.applyKhmerTextSettings();
             if (!this.isValid())
                 return;
 
@@ -1449,6 +1503,12 @@ define([], function () {
 
         strZoom: 'Default Zoom Value',
         okButtonText: 'Apply',
+        strKhmerLineBreak: 'Khmer line-break engine',
+        strKhmerSpellPolicy: 'Khmer spell-check policy',
+        txtKhmerLineBreakIcu: 'ICU (Intl.Segmenter)',
+        txtKhmerLineBreakViterbi: 'Khmer Viterbi segmenter',
+        txtKhmerPolicyOfficial: 'Visual + official',
+        txtKhmerPolicyPractical: 'Visual + practical',
         txtWin: 'as Windows',
         txtMac: 'as OS X',
         txtNative: 'Native',

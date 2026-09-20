@@ -1381,6 +1381,22 @@ define([
                     this.api.asc_setSpellCheckSettings(value);
                 }
 
+                // Khmer text settings: word-segmentation engine for line breaking and spelling policy
+                value = Common.localStorage.getItem("settings-khmer-line-break");
+                value = (value === 'viterbi') ? 'viterbi' : 'icu';
+                Common.Utils.InternalSettings.set("settings-khmer-line-break", value);
+                if (window.AscCommon && typeof window.AscCommon["setKhmerLineBreakEngine"] === 'function')
+                    window.AscCommon.setKhmerLineBreakEngine(value);
+
+                value = Common.localStorage.getItem("settings-khmer-spell-policy");
+                value = (value === 'community') ? 'community' : 'official';
+                Common.Utils.InternalSettings.set("settings-khmer-spell-policy", value);
+                if (window.AscCommon && typeof window.AscCommon["getKhmerSpellchecker"] === 'function') {
+                    var khmerSpellchecker = window.AscCommon.getKhmerSpellchecker();
+                    if (khmerSpellchecker && typeof khmerSpellchecker["setSpellingPolicy"] === 'function')
+                        khmerSpellchecker.setSpellingPolicy({accuracy: 'visual', authority: value});
+                }
+
                 value = Common.localStorage.getBool("de-settings-compatible", false);
                 Common.Utils.InternalSettings.set("de-settings-compatible", value);
 

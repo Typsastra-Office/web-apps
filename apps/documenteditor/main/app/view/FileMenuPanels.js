@@ -383,6 +383,14 @@ define([], function () {
                 '<tr class="edit spellcheck">',
                     '<td colspan="2"><span id="fms-chb-ignore-numbers-words"></span></td>',
                 '</tr>',
+                '<tr class="edit khmer-text">',
+                    '<td><label><%= scope.strKhmerLineBreak %></label></td>',
+                    '<td><div id="fms-cmb-khmer-line-break"></div></td>',
+                '</tr>',
+                '<tr class="edit khmer-text">',
+                    '<td><label><%= scope.strKhmerSpellPolicy %></label></td>',
+                    '<td><div id="fms-cmb-khmer-spell-policy"></div></td>',
+                '</tr>',
                 '<tr class="edit">',
                     '<td colspan="2"><button type="button" class="btn btn-text-default" id="fms-btn-auto-correct" style="width:auto; display: inline-block;padding-right: 10px;padding-left: 10px;" data-hint="2" data-hint-direction="bottom" data-hint-offset="medium"><%= scope.txtAutoCorrect %></button></div></td>',
                 '</tr>',
@@ -556,6 +564,28 @@ define([], function () {
                 dataHint: '2',
                 dataHintDirection: 'left',
                 dataHintOffset: 'small'
+            });
+
+            this.cmbKhmerLineBreak = new Common.UI.ComboBox({
+                el: $markup.findById('#fms-cmb-khmer-line-break'),
+                cls: 'input-large',
+                menuStyle: 'dropdown',
+                editable: false,
+                data: [
+                    { value: 'icu', displayValue: this.txtKhmerLineBreakIcu },
+                    { value: 'viterbi', displayValue: this.txtKhmerLineBreakViterbi }
+                ]
+            });
+
+            this.cmbKhmerSpellPolicy = new Common.UI.ComboBox({
+                el: $markup.findById('#fms-cmb-khmer-spell-policy'),
+                cls: 'input-large',
+                menuStyle: 'dropdown',
+                editable: false,
+                data: [
+                    { value: 'official', displayValue: this.txtKhmerPolicyOfficial },
+                    { value: 'community', displayValue: this.txtKhmerPolicyPractical }
+                ]
             });
 
             this.chCompatible = new Common.UI.CheckBox({
@@ -991,6 +1021,21 @@ define([], function () {
             return this;
         },
 
+        applyKhmerTextSettings: function() {
+            var common = window.AscCommon;
+            if (!common)
+                return;
+
+            if (typeof common["setKhmerLineBreakEngine"] === 'function')
+                common["setKhmerLineBreakEngine"](this.cmbKhmerLineBreak.getValue());
+
+            if (typeof common["getKhmerSpellchecker"] === 'function') {
+                var spellchecker = common["getKhmerSpellchecker"]();
+                if (spellchecker && typeof spellchecker["setSpellingPolicy"] === 'function')
+                    spellchecker["setSpellingPolicy"]({accuracy: 'visual', authority: this.cmbKhmerSpellPolicy.getValue()});
+            }
+        },
+
         updateSettings: function() {
             this.chUseAltKey.setValue(Common.Utils.InternalSettings.get("de-settings-show-alt-hints"));
             this.chScreenReader.setValue(Common.Utils.InternalSettings.get("app-settings-screen-reader"));
@@ -1043,6 +1088,12 @@ define([], function () {
                 this.chIgnoreUppercase.setValue(Common.Utils.InternalSettings.get("de-spellcheck-ignore-uppercase-words"));
                 this.chIgnoreNumbers.setValue(Common.Utils.InternalSettings.get("de-spellcheck-ignore-numbers-words"));
             }
+
+            var khmerBreak = Common.Utils.InternalSettings.get("settings-khmer-line-break");
+            this.cmbKhmerLineBreak.setValue(khmerBreak === 'viterbi' ? 'viterbi' : 'icu');
+            var khmerPolicy = Common.Utils.InternalSettings.get("settings-khmer-spell-policy");
+            this.cmbKhmerSpellPolicy.setValue(khmerPolicy === 'community' ? 'community' : 'official');
+
             this.chAlignGuides.setValue(Common.Utils.InternalSettings.get("de-settings-showsnaplines"));
             this.chCompatible.setValue(Common.Utils.InternalSettings.get("de-settings-compatible"));
 
@@ -1121,6 +1172,12 @@ define([], function () {
                 Common.localStorage.setBool("de-spellcheck-ignore-uppercase-words", this.chIgnoreUppercase.isChecked());
                 Common.localStorage.setBool("de-spellcheck-ignore-numbers-words", this.chIgnoreNumbers.isChecked());
             }
+
+            Common.localStorage.setItem("settings-khmer-line-break", this.cmbKhmerLineBreak.getValue());
+            Common.Utils.InternalSettings.set("settings-khmer-line-break", this.cmbKhmerLineBreak.getValue());
+            Common.localStorage.setItem("settings-khmer-spell-policy", this.cmbKhmerSpellPolicy.getValue());
+            Common.Utils.InternalSettings.set("settings-khmer-spell-policy", this.cmbKhmerSpellPolicy.getValue());
+            this.applyKhmerTextSettings();
             Common.localStorage.setItem("de-settings-compatible", this.chCompatible.isChecked() ? 1 : 0);
             Common.Utils.InternalSettings.set("de-settings-compatible", this.chCompatible.isChecked() ? 1 : 0);
             Common.Utils.InternalSettings.set("de-settings-showsnaplines", this.chAlignGuides.isChecked());
@@ -1241,6 +1298,12 @@ define([], function () {
         txtPt: 'Point',
         textAutoSave: 'Autosave',
         txtSpellCheck: 'Spell Checking',
+        strKhmerLineBreak: 'Khmer line-break engine',
+        strKhmerSpellPolicy: 'Khmer spell-check policy',
+        txtKhmerLineBreakIcu: 'ICU (Intl.Segmenter)',
+        txtKhmerLineBreakViterbi: 'Khmer Viterbi segmenter',
+        txtKhmerPolicyOfficial: 'Visual + official',
+        txtKhmerPolicyPractical: 'Visual + practical',
         textAlignGuides: 'Alignment Guides',
         strCoAuthMode: 'Co-editing mode',
         strFast: 'Fast',
