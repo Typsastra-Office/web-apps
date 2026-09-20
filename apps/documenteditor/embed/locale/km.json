@@ -40,7 +40,7 @@
   "DE.ApplicationController.scriptLoadError": "The connection is too slow, some of the components could not be loaded. Please reload the page.",
   "DE.ApplicationController.textAnonymous": "អនាមិក",
   "DE.ApplicationController.textCancel": "Cancel",
-  "DE.ApplicationController.textClear": "សម្អាតវាលទាំងអស់",
+  "DE.ApplicationController.textClear": "សម្អាតប្រឡោះទាំងអស់",
   "DE.ApplicationController.textConvertFormDownload": "ទាញយកឯកសារជាទម្រង់ PDF ដែលអាចបំពេញបាន ដើម្បីអាចបំពេញវា។",
   "DE.ApplicationController.textCtrl": "Ctrl",
   "DE.ApplicationController.textDownloadPdf": "ទាញយក PDF",
