@@ -478,5 +478,7 @@
   "VE.Views.ViewTab.textZoom": "Přiblížení",
   "VE.Views.ViewTab.tipFitPage": "Přízpůsobit stránce",
   "VE.Views.ViewTab.tipFitWidth": "Přizpůsobit šířce",
-  "VE.Views.ViewTab.tipInterfaceTheme": "Vzhled uživatelského rozhraní"
+  "VE.Views.ViewTab.tipInterfaceTheme": "Vzhled uživatelského rozhraní",
+  "VE.Controllers.Main.errorFileNotAssembled": "This file is opened from a server backup copy and is not saved to storage.<br>Use the 'Save as...' option to save it to a drive.",
+  "VE.Controllers.Main.errorForcedViewMode": "This file is opened in view mode.<br>The file is locked for editing or your access rights do not allow editing."
 }

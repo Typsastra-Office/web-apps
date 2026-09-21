@@ -5389,5 +5389,7 @@
   "SSE.Views.WBProtection.txtSheetUnlockDescription": "Unesite šifru kako biste uklonili zaštitu sa lista.",
   "SSE.Views.WBProtection.txtSheetUnlockTitle": "Nezaštićeni list",
   "SSE.Views.WBProtection.txtWBUnlockDescription": "Unesite šifru kako biste uklonili zaštitu sa radne knjige.",
-  "SSE.Views.WBProtection.txtWBUnlockTitle": "Ukloni zaštitu radne knjige"
+  "SSE.Views.WBProtection.txtWBUnlockTitle": "Ukloni zaštitu radne knjige",
+  "SSE.Controllers.Toolbar.helpDarkDocument": "Switch the sheet background to dark mode when using a dark interface theme.",
+  "SSE.Controllers.Toolbar.helpDarkDocumentHeader": "Dark document"
 }

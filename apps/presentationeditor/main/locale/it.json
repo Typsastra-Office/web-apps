@@ -3698,5 +3698,12 @@
   "PE.Views.ViewTab.tipResumeMacro": "Riprendi la registrazione",
   "PE.Views.ViewTab.tipSelectTool": "Seleziona strumento",
   "PE.Views.ViewTab.tipSlideMaster": "Slide master",
-  "PE.Views.ViewTab.tipStopMacro": "Ferma la registrazione"
+  "PE.Views.ViewTab.tipStopMacro": "Ferma la registrazione",
+  "PE.Controllers.Toolbar.helpPasteOptions": "Use the dropdown arrow on the Paste button to choose how to paste content.",
+  "PE.Controllers.Toolbar.helpPasteOptionsHeader": "Paste options",
+  "PE.Controllers.Toolbar.helpSlideTheme": "Explore new slide design themes to give your presentation a fresh look.",
+  "PE.Controllers.Toolbar.helpSlideThemeHeader": "New slide themes",
+  "PE.Controllers.Toolbar.helpSlideTransitions": "Discover new transition effects to add motion between your slides.",
+  "PE.Controllers.Toolbar.helpSlideTransitionsHeader": "New slide transitions",
+  "PE.Views.Transitions.textShape": "Shape"
 }

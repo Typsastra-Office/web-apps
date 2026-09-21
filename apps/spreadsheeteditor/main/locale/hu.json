@@ -5389,5 +5389,7 @@
   "SSE.Views.WBProtection.txtSheetUnlockDescription": "Írjon be egy jelszót a munkalap zárolásának megszüntetéséhez",
   "SSE.Views.WBProtection.txtSheetUnlockTitle": "Munkalap védelmének megszüntetése",
   "SSE.Views.WBProtection.txtWBUnlockDescription": "Írjon be egy jelszót a munkafüzet zárolásának megszüntetéséhez",
-  "SSE.Views.WBProtection.txtWBUnlockTitle": "Munkafüzet védelmének megszüntetése"
+  "SSE.Views.WBProtection.txtWBUnlockTitle": "Munkafüzet védelmének megszüntetése",
+  "SSE.Controllers.Toolbar.helpDarkDocument": "Switch the sheet background to dark mode when using a dark interface theme.",
+  "SSE.Controllers.Toolbar.helpDarkDocumentHeader": "Dark document"
 }

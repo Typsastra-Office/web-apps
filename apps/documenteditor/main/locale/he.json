@@ -2903,7 +2903,7 @@
   "DE.Views.FileMenuPanels.Settings.txtFitWidth": "מתאים לרוחב",
   "DE.Views.FileMenuPanels.Settings.txtHieroglyphs": "הירוגליפים",
   "DE.Views.FileMenuPanels.Settings.txtHindi": "הינדי",
-  "DE.Views.FileMenuPanels.Settings.txtKhmer": "Khmer"
+  "DE.Views.FileMenuPanels.Settings.txtKhmer": "Khmer",
   "DE.Views.FileMenuPanels.Settings.txtInch": "אינץ'",
   "DE.Views.FileMenuPanels.Settings.txtLast": "תצוגה אחרונה",
   "DE.Views.FileMenuPanels.Settings.txtLastUsed": "בשימוש אחרון",
@@ -4466,5 +4466,17 @@
   "DE.Views.WatermarkSettingsDialog.textTransparency": "חצי שקוף",
   "DE.Views.WatermarkSettingsDialog.textUnderline": "קו תחתון",
   "DE.Views.WatermarkSettingsDialog.tipFontName": "שם גופן",
-  "DE.Views.WatermarkSettingsDialog.tipFontSize": "גודל גופן"
+  "DE.Views.WatermarkSettingsDialog.tipFontSize": "גודל גופן",
+  "DE.Controllers.Toolbar.helpPasteOptions": "Use the dropdown arrow on the Paste button to choose how to paste content.",
+  "DE.Controllers.Toolbar.helpPasteOptionsHeader": "Paste options",
+  "DE.Views.ParagraphSettingsAdvanced.errorBorderPaddingsRange": "The measurement must be not more than %1 %2",
+  "DE.Views.RightMenu.txtFillingStatus": "Filling status",
+  "DE.Views.RightMenu.txtSendForSigning": "Send for signing",
+  "DE.Views.SendForSigningSettings.txtCancel": "Cancel",
+  "DE.Views.SendForSigningSettings.txtDescription": "Please check the order of filling before sending.",
+  "DE.Views.SendForSigningSettings.txtNoUsersFound": "No users found",
+  "DE.Views.SendForSigningSettings.txtSelectUser": "Select user",
+  "DE.Views.SendForSigningSettings.txtSend": "Send",
+  "DE.Views.SendForSigningSettings.txtTitle": "Send for signing",
+  "DE.Views.Toolbar.textHorizontalLine": "Horizontal line"
 }

@@ -467,5 +467,18 @@
   "VE.Views.ViewTab.textZoom": "Zoomen",
   "VE.Views.ViewTab.tipFitPage": "Aan pagina aanpassen",
   "VE.Views.ViewTab.tipFitWidth": "Aan breedte aanpassen",
-  "VE.Views.ViewTab.tipInterfaceTheme": "Thema van de interface"
+  "VE.Views.ViewTab.tipInterfaceTheme": "Thema van de interface",
+  "Common.Views.SearchPanel.textTooManyResults": "There are too many results to show here",
+  "Common.Views.ShortcutsEditDialog.txtInputWarnMany": "The shortcut used by actions %1",
+  "Common.Views.ShortcutsEditDialog.txtInputWarnManyLocked": "The shortcut used by actions %1 and can’t be changed",
+  "Common.Views.ShortcutsEditDialog.txtInputWarnOne": "The shortcut used by action %1",
+  "Common.Views.ShortcutsEditDialog.txtInputWarnOneLocked": "The shortcut used by action %1 and can’t be changed",
+  "VE.Controllers.Main.errorFileNotAssembled": "This file is opened from a server backup copy and is not saved to storage.<br>Use the 'Save as...' option to save it to a drive.",
+  "VE.Controllers.Main.errorForcedViewMode": "This file is opened in view mode.<br>The file is locked for editing or your access rights do not allow editing.",
+  "VE.Controllers.Main.saveErrorTextDesktop": "This file cannot be saved or created.<br>Possible reasons are: <br>1. The file is read-only. <br>2. The file is being edited by other users. <br>3. The disk is full or corrupted.",
+  "VE.Controllers.Main.txtSecurityWarningLink": "This document is trying to connect to {0}.<br>If you trust this site, press \"OK\" while holding down the ctrl key.",
+  "VE.Controllers.Main.txtSecurityWarningOpenFile": "This document is trying to open file dialog, press \"OK\" to open.",
+  "VE.Controllers.Main.warnNoResources": "The %1 server does not have enough resources to open this document for editing. This document will be opened for viewing only.",
+  "VE.Controllers.Main.warnNoLicenseUsers": "You've reached the user limit for %1 editors. Contact %1 sales team for personal upgrade terms.",
+  "VE.Views.PrintWithPreview.txtEmptyTable": "There is nothing to print because the diagram is empty"
 }

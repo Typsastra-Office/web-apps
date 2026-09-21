@@ -478,5 +478,7 @@
   "VE.Views.ViewTab.textZoom": "زوم",
   "VE.Views.ViewTab.tipFitPage": "صفحہ پر فٹ",
   "VE.Views.ViewTab.tipFitWidth": "چوڑائی کے مطابق",
-  "VE.Views.ViewTab.tipInterfaceTheme": "انٹرفیس تھیم"
+  "VE.Views.ViewTab.tipInterfaceTheme": "انٹرفیس تھیم",
+  "VE.Controllers.Main.errorFileNotAssembled": "This file is opened from a server backup copy and is not saved to storage.<br>Use the 'Save as...' option to save it to a drive.",
+  "VE.Controllers.Main.errorForcedViewMode": "This file is opened in view mode.<br>The file is locked for editing or your access rights do not allow editing."
 }

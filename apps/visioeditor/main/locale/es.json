@@ -478,5 +478,7 @@
   "VE.Views.ViewTab.textZoom": "Ampliación",
   "VE.Views.ViewTab.tipFitPage": "Ajustar a la página",
   "VE.Views.ViewTab.tipFitWidth": "Ajustar al ancho",
-  "VE.Views.ViewTab.tipInterfaceTheme": "Tema de la interfaz"
+  "VE.Views.ViewTab.tipInterfaceTheme": "Tema de la interfaz",
+  "VE.Controllers.Main.errorFileNotAssembled": "This file is opened from a server backup copy and is not saved to storage.<br>Use the 'Save as...' option to save it to a drive.",
+  "VE.Controllers.Main.errorForcedViewMode": "This file is opened in view mode.<br>The file is locked for editing or your access rights do not allow editing."
 }

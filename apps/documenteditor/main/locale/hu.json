@@ -2903,7 +2903,7 @@
   "DE.Views.FileMenuPanels.Settings.txtFitWidth": "Szélességhez igazít",
   "DE.Views.FileMenuPanels.Settings.txtHieroglyphs": "Hieroglifák",
   "DE.Views.FileMenuPanels.Settings.txtHindi": "Hindi",
-  "DE.Views.FileMenuPanels.Settings.txtKhmer": "Khmer"
+  "DE.Views.FileMenuPanels.Settings.txtKhmer": "Khmer",
   "DE.Views.FileMenuPanels.Settings.txtInch": "Hüvelyk",
   "DE.Views.FileMenuPanels.Settings.txtLast": "Utolsó megtekintése",
   "DE.Views.FileMenuPanels.Settings.txtLastUsed": "Utoljára használatban",
@@ -4468,5 +4468,15 @@
   "DE.Views.WatermarkSettingsDialog.textTransparency": "Féligáttetsző",
   "DE.Views.WatermarkSettingsDialog.textUnderline": "Aláhúzott",
   "DE.Views.WatermarkSettingsDialog.tipFontName": "Betűtípus neve",
-  "DE.Views.WatermarkSettingsDialog.tipFontSize": "Betűméret"
+  "DE.Views.WatermarkSettingsDialog.tipFontSize": "Betűméret",
+  "DE.Controllers.Toolbar.helpPasteOptions": "Use the dropdown arrow on the Paste button to choose how to paste content.",
+  "DE.Controllers.Toolbar.helpPasteOptionsHeader": "Paste options",
+  "DE.Views.RightMenu.txtFillingStatus": "Filling status",
+  "DE.Views.RightMenu.txtSendForSigning": "Send for signing",
+  "DE.Views.SendForSigningSettings.txtCancel": "Cancel",
+  "DE.Views.SendForSigningSettings.txtDescription": "Please check the order of filling before sending.",
+  "DE.Views.SendForSigningSettings.txtNoUsersFound": "No users found",
+  "DE.Views.SendForSigningSettings.txtSelectUser": "Select user",
+  "DE.Views.SendForSigningSettings.txtSend": "Send",
+  "DE.Views.SendForSigningSettings.txtTitle": "Send for signing"
 }

@@ -2903,7 +2903,7 @@
   "DE.Views.FileMenuPanels.Settings.txtFitWidth": "Prilagodi širini",
   "DE.Views.FileMenuPanels.Settings.txtHieroglyphs": "Hijeroglifi",
   "DE.Views.FileMenuPanels.Settings.txtHindi": "Hindski",
-  "DE.Views.FileMenuPanels.Settings.txtKhmer": "Khmer"
+  "DE.Views.FileMenuPanels.Settings.txtKhmer": "Khmer",
   "DE.Views.FileMenuPanels.Settings.txtInch": "Inč",
   "DE.Views.FileMenuPanels.Settings.txtLast": "Pogledaj posljednje",
   "DE.Views.FileMenuPanels.Settings.txtLastUsed": "Zadnje korišteno",
@@ -4475,5 +4475,8 @@
   "DE.Views.WatermarkSettingsDialog.textTransparency": "Polu-prozirno",
   "DE.Views.WatermarkSettingsDialog.textUnderline": "Podcrtaj",
   "DE.Views.WatermarkSettingsDialog.tipFontName": "Naziv fonta",
-  "DE.Views.WatermarkSettingsDialog.tipFontSize": "Veličina fonta"
+  "DE.Views.WatermarkSettingsDialog.tipFontSize": "Veličina fonta",
+  "DE.Controllers.Toolbar.helpPasteOptions": "Use the dropdown arrow on the Paste button to choose how to paste content.",
+  "DE.Controllers.Toolbar.helpPasteOptionsHeader": "Paste options",
+  "DE.Views.RightMenu.txtFillingStatus": "Filling status"
 }

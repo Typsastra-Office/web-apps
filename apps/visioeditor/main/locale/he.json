@@ -479,5 +479,6 @@
   "VE.Views.ViewTab.textZoom": "תקריב",
   "VE.Views.ViewTab.tipFitPage": "התאמה לדף",
   "VE.Views.ViewTab.tipFitWidth": "התאמה לרוחב",
-  "VE.Views.ViewTab.tipInterfaceTheme": "ערכת נושא של הממשק"
+  "VE.Views.ViewTab.tipInterfaceTheme": "ערכת נושא של הממשק",
+  "VE.Views.PrintWithPreview.txtEmptyTable": "There is nothing to print because the diagram is empty"
 }
