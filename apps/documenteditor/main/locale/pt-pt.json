@@ -4476,7 +4476,5 @@
   "DE.Views.WatermarkSettingsDialog.textTransparency": "Semi-transparente",
   "DE.Views.WatermarkSettingsDialog.textUnderline": "Sublinhado",
   "DE.Views.WatermarkSettingsDialog.tipFontName": "Nome do tipo de letra",
-  "DE.Views.WatermarkSettingsDialog.tipFontSize": "Tamanho do tipo de letra",
-  "DE.Controllers.Toolbar.helpPasteOptions": "Use the dropdown arrow on the Paste button to choose how to paste content.",
-  "DE.Controllers.Toolbar.helpPasteOptionsHeader": "Paste options"
+  "DE.Views.WatermarkSettingsDialog.tipFontSize": "Tamanho do tipo de letra"
 }

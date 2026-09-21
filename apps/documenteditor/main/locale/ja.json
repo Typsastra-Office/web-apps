@@ -4469,14 +4469,5 @@
   "DE.Views.WatermarkSettingsDialog.textTransparency": "半透明",
   "DE.Views.WatermarkSettingsDialog.textUnderline": "アンダーライン",
   "DE.Views.WatermarkSettingsDialog.tipFontName": "フォント名",
-  "DE.Views.WatermarkSettingsDialog.tipFontSize": "フォントのサイズ",
-  "DE.Controllers.Toolbar.helpPasteOptions": "Use the dropdown arrow on the Paste button to choose how to paste content.",
-  "DE.Controllers.Toolbar.helpPasteOptionsHeader": "Paste options",
-  "DE.Views.RightMenu.txtSendForSigning": "Send for signing",
-  "DE.Views.SendForSigningSettings.txtCancel": "Cancel",
-  "DE.Views.SendForSigningSettings.txtDescription": "Please check the order of filling before sending.",
-  "DE.Views.SendForSigningSettings.txtNoUsersFound": "No users found",
-  "DE.Views.SendForSigningSettings.txtSelectUser": "Select user",
-  "DE.Views.SendForSigningSettings.txtSend": "Send",
-  "DE.Views.SendForSigningSettings.txtTitle": "Send for signing"
+  "DE.Views.WatermarkSettingsDialog.tipFontSize": "フォントのサイズ"
 }

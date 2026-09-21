@@ -4475,8 +4475,5 @@
   "DE.Views.WatermarkSettingsDialog.textTransparency": "Polu-prozirno",
   "DE.Views.WatermarkSettingsDialog.textUnderline": "Podcrtaj",
   "DE.Views.WatermarkSettingsDialog.tipFontName": "Naziv fonta",
-  "DE.Views.WatermarkSettingsDialog.tipFontSize": "Veličina fonta",
-  "DE.Controllers.Toolbar.helpPasteOptions": "Use the dropdown arrow on the Paste button to choose how to paste content.",
-  "DE.Controllers.Toolbar.helpPasteOptionsHeader": "Paste options",
-  "DE.Views.RightMenu.txtFillingStatus": "Filling status"
+  "DE.Views.WatermarkSettingsDialog.tipFontSize": "Veličina fonta"
 }
