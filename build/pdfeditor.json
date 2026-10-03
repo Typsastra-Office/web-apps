@@ -172,6 +172,16 @@
             "files": "../deploy/web-apps/apps/pdfeditor/main/**/*.json"
         },
         "copy": {
+            "pdfjs": [
+                {
+                    "expand": true,
+                    "cwd": "../vendor/pdfjs/",
+                    "src": [
+                        "*"
+                    ],
+                    "dest": "../deploy/web-apps/vendor/pdfjs"
+                }
+            ],
             "localization": [
                 {
                     "expand": true,

@@ -457,7 +457,9 @@ module.exports = function(grunt) {
                 }
             },
 
-            copy: {
+// Apps may ship extra vendor payloads (for example pdf.js, which the
+            // PDF editor loads on demand). Only pdfeditor declares one today.
+            copy: _.extend({
                 localization: {
                     files: packageFile['main']['copy']['localization']
                 },
@@ -467,7 +469,11 @@ module.exports = function(grunt) {
                 indexhtml: {
                     files: packageFile['main']['copy']['indexhtml']
                 }
-            },
+            }, packageFile['main']['copy']['pdfjs'] ? {
+                pdfjs: {
+                    files: packageFile['main']['copy']['pdfjs']
+                }
+            } : {}),
 
             inline: {
                 options: {
