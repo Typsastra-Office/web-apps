@@ -82,6 +82,7 @@ define([], function () {
             });
 
             if (this.api) {
+                this.installKhmerOcrClipboard();
                 this.api.asc_registerCallback('asc_onContextMenu',                  _.bind(this.onContextMenu, this));
                 this.api.asc_registerCallback('asc_onMouseMoveStart',               _.bind(this.onMouseMoveStart, this));
                 this.api.asc_registerCallback('asc_onMouseMoveEnd',                 _.bind(this.onMouseMoveEnd, this));
@@ -126,6 +127,7 @@ define([], function () {
             if (type==='pdf') {
                 view.menuViewCopyPage.on('click', _.bind(me.onCutCopyPaste, me));
                 view.menuPDFViewCopy.on('click', _.bind(me.onCutCopyPaste, me));
+                view.menuPDFViewOcrCopy.on('click', _.bind(me.copySelectionWithKhmerOcr, me));
                 view.menuAddComment.on('click', _.bind(me.addComment, me));
                 view.menuRemoveComment.on('click', _.bind(me.removeComment, me));
             } else if (type==='forms') {
@@ -137,6 +139,7 @@ define([], function () {
                 view.menuPDFFormsPaste.on('click', _.bind(me.onCutCopyPaste, me));
             } else if (type==='edit') {
                 view.menuPDFEditCopy.on('click', _.bind(me.onCutCopyPaste, me));
+                view.menuPDFEditOcrCopy.on('click', _.bind(me.copySelectionWithKhmerOcr, me));
                 view.menuEditAddComment.on('click', _.bind(me.addComment, me));
                 view.menuEditRemoveComment.on('click', _.bind(me.removeComment, me));
                 /*
@@ -1376,6 +1379,47 @@ define([], function () {
                 }
                 /** coauthoring end **/
             }
+        };
+
+        dh.installKhmerOcrClipboard = function() {
+            if (!this.api || this.api.pluginMethod_CopyKhmerOcrText) return;
+            this.api.pluginMethod_CopyKhmerOcrText = function(text) {
+                if (typeof text !== 'string' || !text) return false;
+                var area = document.createElement('textarea'), copied = false;
+                area.value = text;
+                area.readOnly = true;
+                area.style.position = 'fixed';
+                area.style.left = '-10000px';
+                document.body.appendChild(area);
+
+                function onCopy(event) {
+                    if (!event.clipboardData || !event.clipboardData.setData) return;
+                    event.clipboardData.setData('text/plain', text);
+                    event.preventDefault();
+                    event.stopImmediatePropagation();
+                    copied = true;
+                }
+
+                document.addEventListener('copy', onCopy, true);
+                try {
+                    area.focus();
+                    area.select();
+                    return !!(document.execCommand('copy') && copied);
+                } finally {
+                    document.removeEventListener('copy', onCopy, true);
+                    area.remove();
+                }
+            };
+        };
+
+        dh.copySelectionWithKhmerOcr = function() {
+            var pages = this.documentHolder.khmerOcrSelection;
+            if (!pages || !pages.length) return;
+            this.documentHolder.khmerOcrSelection = null;
+            this.api.onPluginContextMenuItemClick(
+                'asc.{0E5BEC1D-C728-46E1-9876-2BFD7E980F40}',
+                { id: 'khmer-ocr-copy-selection', pages: pages }
+            );
         };
 
         dh.onCutCopyPaste = function(item, e) {

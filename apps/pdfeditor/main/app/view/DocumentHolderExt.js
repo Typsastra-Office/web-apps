@@ -39,6 +39,26 @@ define([], function () {
     if (window.PDFE && window.PDFE.Views && window.PDFE.Views.DocumentHolder) {
         let dh = window.PDFE.Views.DocumentHolder.prototype;
 
+        dh.canCopySelectionWithKhmerOcr = function() {
+            var guid = 'asc.{0E5BEC1D-C728-46E1-9876-2BFD7E980F40}',
+                manager = window.g_asc_plugins,
+                viewer = this.api && this.api.getDocumentRenderer && this.api.getDocumentRenderer(),
+                file = viewer && viewer.file;
+
+            this.khmerOcrSelection = null;
+            if (!manager || !manager.runnedPluginsMap || !manager.runnedPluginsMap[guid] ||
+                !file || !file.Selection || !file.Selection.IsSelection || !file.getSelectionQuads)
+                return false;
+
+            var pages = file.getSelectionQuads().map(function(entry) {
+                var page = file.pages[entry.page];
+                return page && { index: entry.page, width: page.W, height: page.H,
+                    rotation: page.Rotate || 0, quads: entry.quads };
+            }).filter(function(page) { return page && page.quads && page.quads.length; });
+            this.khmerOcrSelection = pages.length ? pages : null;
+            return !!this.khmerOcrSelection;
+        };
+
         dh.createDelayedElementsPDFViewer = function() {
             var me = this;
 
@@ -48,6 +68,11 @@ define([], function () {
                 iconCls: 'menu__icon btn-copy',
                 caption: me.textCopy,
                 value: 'copy'
+            });
+
+            me.menuPDFViewOcrCopy = new Common.UI.MenuItem({
+                caption: 'Copy with Khmer OCR',
+                value: 'khmer-ocr-copy-selection'
             });
 
             me.menuAddComment = new Common.UI.MenuItem({
@@ -65,6 +90,7 @@ define([], function () {
                 initMenu: function (value) {
                     var disabled = (value.pageProps!==undefined && value.pageProps.locked);
                     me.menuPDFViewCopy.setDisabled(!(me.api && me.api.can_CopyCut()));
+                    me.menuPDFViewOcrCopy.setVisible(me.canCopySelectionWithKhmerOcr());
                     me.menuAddComment.setVisible(me.mode && me.mode.canComments);
                     me.menuAddComment.setDisabled(disabled);
                     me.menuRemoveComment.setVisible(value && value.annotProps && value.annotProps.value);
@@ -72,6 +98,7 @@ define([], function () {
                 },
                 items: [
                     me.menuPDFViewCopy,
+                    me.menuPDFViewOcrCopy,
                     me.menuAddComment,
                     me.menuRemoveComment
                 ]
@@ -129,6 +156,11 @@ define([], function () {
                 value: 'copy'
             });
 
+            me.menuPDFEditOcrCopy = new Common.UI.MenuItem({
+                caption: 'Copy with Khmer OCR',
+                value: 'khmer-ocr-copy-selection'
+            });
+
             me.menuEditAddComment = new Common.UI.MenuItem({
                 iconCls: 'menu__icon btn-add-comment',
                 caption     : me.addCommentText
@@ -148,6 +180,7 @@ define([], function () {
                 initMenu: function (value) {
                     var disabled = (value.pageProps!==undefined && value.pageProps.locked);
                     me.menuPDFEditCopy.setDisabled(!(me.api && me.api.can_CopyCut()));
+                    me.menuPDFEditOcrCopy.setVisible(me.canCopySelectionWithKhmerOcr());
                     me.menuEditAddComment.setVisible(me.mode && me.mode.canComments);
                     me.menuEditAddComment.setDisabled(disabled);
                     me.menuEditRemoveComment.setVisible(value && value.annotProps && value.annotProps.value);
@@ -161,6 +194,7 @@ define([], function () {
                 },
                 items: [
                     me.menuPDFEditCopy,
+                    me.menuPDFEditOcrCopy,
                     me.menuEditAddComment,
                     me.menuPDFEditHyperlink,
                     me.menuEditRemoveComment
