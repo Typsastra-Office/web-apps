@@ -106,6 +106,45 @@
         }
     }
 
+    .status-khmer-textlayer {
+        display: inline-block;
+        .margin-left-10();
+        padding: 2px 8px;
+        border-radius: 9px;
+        font-size: 11px;
+        line-height: 16px;
+        cursor: default;
+        white-space: nowrap;
+
+        &.status-khmer-searchable {
+            background-color: @state-success-bg;
+            color: @state-success-text;
+        }
+
+        &.status-khmer-unreliable {
+            background-color: @state-danger-bg;
+            color: @state-danger-text;
+        }
+
+        .theme-type-dark & {
+            background-color: transparent;
+
+            &.status-khmer-searchable {
+                border: 1px solid #4a9c5f;
+                color: #8fd6a3;
+            }
+
+            &.status-khmer-unreliable {
+                border: 1px solid #a8504a;
+                color: #f0998f;
+            }
+        }
+    }
+
+    .hide-khmer-textlayer {
+        display: none;
+    }
+
     .hide-select-tools {
         display: none;
     }

@@ -17,4 +17,5 @@
 * MobX 6.13.6 ([MIT License](https://github.com/mobxjs/mobx/blob/main/LICENSE))
 * SVG sprite loader 6.0.11 ([MIT License](https://github.com/JetBrains/svg-sprite-loader/blob/master/LICENSE))
 * MiSans Khmer ([MiSans Font Intellectual Property License Agreement](apps/common/main/resources/fonts/MiSans-Khmer-LICENSE.txt)) — Copyright (C) Xiaomi Inc. Used for Khmer script in the application UI.
+* pdf.js (pdfjs-dist) 4.10.38, legacy build ([Apache License 2.0](https://github.com/mozilla/pdf.js/blob/master/LICENSE)) — Copyright (C) Mozilla Foundation. Used to read the PDF text layer when classifying Khmer text quality.
 

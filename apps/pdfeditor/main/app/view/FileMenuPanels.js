@@ -1189,6 +1189,10 @@ define([], function () {
                             '<td class="left"><label>' + this.txtPdfTagged + '</label></td>',
                             '<td class="right"><label id="id-info-pdf-tagged"></label></td>',
                         '</tr>',
+                        '<tr class="pdf-info" id="id-info-khmer-row" style="display: none;">',
+                            '<td class="left"><label>' + this.txtKhmerTextLayer + '</label></td>',
+                            '<td class="right"><label id="id-info-khmer-text"></label></td>',
+                        '</tr>',
                         '<tr class="pdf-info">',
                             '<td class="left"><label>' + this.txtFastWV + '</label></td>',
                             '<td class="right"><label id="id-info-fast-wv"></label></td>',
@@ -1384,6 +1388,8 @@ define([], function () {
             this.lblPdfTagged = $markup.findById('#id-info-pdf-tagged');
             this.lblPdfProducer = $markup.findById('#id-info-pdf-produce');
             this.lblFastWV = $markup.findById('#id-info-fast-wv');
+            this.lblKhmerText = $markup.findById('#id-info-khmer-text');
+            this.trKhmerText = $markup.findById('#id-info-khmer-row');
 
             // this.btnApply = new Common.UI.Button({
             //     el: $markup.findById('#fminfo-btn-apply')
@@ -1429,7 +1435,40 @@ define([], function () {
             this.stopUpdatingStatisticInfo();
         },
 
-        updateScroller: function(destroy) {
+        /**
+             * Shows the outcome of the Khmer text layer inspection. Unlike the
+             * status bar this reports every state, including documents that
+             * contain no Khmer text and documents that could not be inspected,
+             * because the properties panel is where a user looks for detail.
+             */
+            setKhmerTextLayer: function (result) {
+                this.khmerTextLayer = result;
+                if (!this.lblKhmerText || !this.lblKhmerText.length)
+                    return;
+
+                var caption;
+                if (!result)
+                    caption = this.txtKhmerTextUnknown;
+                else
+                    switch (result.status) {
+                        case 'searchable':
+                            caption = this.txtKhmerTextSearchable;
+                            break;
+                        case 'unreliable':
+                            caption = this.txtKhmerTextUnreliable;
+                            break;
+                        case 'no-khmer':
+                            caption = this.txtKhmerTextNone;
+                            break;
+                        default:
+                            caption = this.txtKhmerTextUnknown;
+                    }
+
+                this.lblKhmerText.text(caption);
+                this.trKhmerText[caption === this.txtKhmerTextUnknown ? 'hide' : 'show']();
+            },
+
+            updateScroller: function(destroy) {
             if (this.scroller) {
                 this.scroller.update(destroy ? {} : undefined);
             }
@@ -1631,6 +1670,8 @@ define([], function () {
                     this.lblPdfTagged.text(value===true ? this.txtYes : this.txtNo);
                 this._ShowHideInfoItem(this.lblPdfTagged, value !== undefined);
 
+                this.setKhmerTextLayer(this.khmerTextLayer);
+
                 value = props.Producer;
                 value && this.lblPdfProducer.text(value);
                 this._ShowHideInfoItem(this.lblPdfProducer, !!value);
@@ -1805,6 +1846,11 @@ define([], function () {
         txtPageSize: 'Page Size',
         txtPdfVer: 'PDF Version',
         txtPdfTagged: 'Tagged PDF',
+        txtKhmerTextLayer: 'Khmer text layer',
+        txtKhmerTextSearchable: 'Searchable (no OCR needed)',
+        txtKhmerTextUnreliable: 'Not searchable (OCR needed)',
+        txtKhmerTextNone: 'No Khmer text',
+        txtKhmerTextUnknown: 'Not checked',
         txtFastWV: 'Fast Web View',
         txtYes: 'Yes',
         txtNo: 'No',
@@ -1863,6 +1909,10 @@ define([], function () {
 
             Common.NotificationCenter.on('collaboration:sharingupdate', this.updateSharingSettings.bind(this));
             Common.NotificationCenter.on('collaboration:sharingdeny', this.onLostEditRights.bind(this));
+            Common.NotificationCenter.on('pdf:textlayer', function(result) {
+                this.setKhmerTextLayer(result);
+                if (this.rendered) this.updateInfo(this.doc);
+            }.bind(this));
 
             this.$el = $(node).html($markup);
 

@@ -12,6 +12,9 @@
         <span id="slot-status-btn-prev" style="display: inline-block;"></span>
         <span id="slot-status-btn-next" style="display: inline-block;"></span>
     </div>
+    <div class="status-group hide-khmer-textlayer">
+        <label id="label-khmer-textlayer" class="status-label status-khmer-textlayer" data-hint="0" data-hint-direction="top"></label>
+    </div>
     <div class="status-group" style="width:100%; text-align:center;">
         <label id="label-action" class="status-label" data-layout-name="statusBar-actionStatus"></label>
     </div>

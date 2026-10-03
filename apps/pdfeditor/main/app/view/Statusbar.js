@@ -159,6 +159,36 @@ define([
             });
         }
 
+        /**
+         * Reflects the result of the Khmer text layer inspection. Only the two
+         * actionable states are surfaced: a searchable text layer, and a layer
+         * that needs OCR. Documents without Khmer text and documents that could
+         * not be inspected are left out of the status bar and reported in the
+         * document properties instead.
+         */
+        function _onKhmerTextLayer(result) {
+            var me = this;
+            // The result arrives asynchronously and the view may not be rendered
+            // yet, so keep it and let render() apply it.
+            me.khmerTextLayer = result;
+
+            var label = me.$el.find('#label-khmer-textlayer');
+            if (!label.length) return;
+
+            var group = label.closest('.status-group');
+            if (!result || 'searchable' !== result.status && 'unreliable' !== result.status) {
+                group.addClass('hide-khmer-textlayer');
+                return;
+            }
+
+            var searchable = 'searchable' === result.status;
+            label.removeClass('status-khmer-searchable status-khmer-unreliable')
+                .addClass(searchable ? 'status-khmer-searchable' : 'status-khmer-unreliable')
+                .text(searchable ? me.khmerTextSearchable : me.khmerTextUnreliable);
+            group.removeClass('hide-khmer-textlayer');
+            label.attr('data-hint', searchable ? me.tipKhmerTextSearchable : me.tipKhmerTextUnreliable);
+        }
+
         PDFE.Views.Statusbar = Backbone.View.extend(_.extend({
             el: '#statusbar',
             template: _.template(template),
@@ -279,6 +309,8 @@ define([
                 Common.NotificationCenter.on('app:ready', function(mode) {
                     promise.then( _onAppReady.bind(this, mode) );
                 }.bind(this));
+
+                Common.NotificationCenter.on('pdf:textlayer', _onKhmerTextLayer.bind(this));
             },
 
             render: function(config) {
@@ -310,6 +342,9 @@ define([
 
                 this.$el.html(me.$layout);
                 this.fireEvent('render:after', [this]);
+
+                if (undefined !== me.khmerTextLayer)
+                    _onKhmerTextLayer.call(me, me.khmerTextLayer);
 
                 return this;
             },
@@ -373,7 +408,11 @@ define([
             tipPagePrev: 'Go to previous page',
             tipPageNext: 'Go to nex page',
             tipSelectTool       : 'Select tool',
-            tipHandTool         : 'Hand tool'
+            tipHandTool         : 'Hand tool',
+            khmerTextSearchable : 'Khmer text searchable',
+            khmerTextUnreliable : 'Khmer text needs OCR',
+            tipKhmerTextSearchable : 'The Khmer text in this PDF extracts correctly, so searching and copying work without OCR.',
+            tipKhmerTextUnreliable : 'The selectable Khmer text in this PDF is not readable. Use Khmer OCR to build a correct text layer.'
         }, PDFE.Views.Statusbar || {}));
     }
 );

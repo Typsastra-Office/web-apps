@@ -58,6 +58,7 @@ define([
     'common/main/lib/view/OpenDialog',
     'common/main/lib/collection/TextArt',
     'common/main/lib/view/UserNameDialog',
+    'pdfeditor/main/app/lib/PdfTextLayerInspector',
 ], function () {
     'use strict';
 
@@ -1037,6 +1038,8 @@ define([
                 me._isDocReady = true;
                 Common.NotificationCenter.trigger('app:ready', this.appOptions);
 
+                me.inspectKhmerTextLayer();
+
                 me.api.SetDrawingFreeze(false);
                 me.hidePreloader();
                 me.onLongActionEnd(Asc.c_oAscAsyncActionType['BlockInteraction'], LoadingDocument);
@@ -1203,6 +1206,37 @@ define([
                 this.appOptions.user.guest && this.appOptions.canRenameAnonymous && (Common.Utils.InternalSettings.get("guest-username")===null) && this.showRenameUserDialog();
                 if (this._needToSaveAsFile) // warning received before document is ready
                     this.getApplication().getController('LeftMenu').leftMenu.showMenu('file:saveas');
+            },
+
+            /**
+             * Classify the Khmer text layer of the opened PDF so the status bar
+             * and the document properties can tell the user whether the text is
+             * already searchable or OCR is still required. The result is
+             * broadcast because both places render it independently.
+             */
+            inspectKhmerTextLayer: function () {
+                var me = this;
+                var viewer = me.api && me.api.DocumentRenderer;
+                if (!viewer || 'function' !== typeof viewer.getFileNativeBinary) {
+                    Common.NotificationCenter.trigger('pdf:textlayer', { status: 'unknown' });
+                    return;
+                }
+
+                var bytes = null;
+                try {
+                    bytes = viewer.getFileNativeBinary();
+                } catch (error) {
+                    bytes = null;
+                }
+
+                if (!bytes) {
+                    Common.NotificationCenter.trigger('pdf:textlayer', { status: 'unknown' });
+                    return;
+                }
+
+                return PdfTextLayerInspector.inspect(bytes).then(function (result) {
+                    Common.NotificationCenter.trigger('pdf:textlayer', result);
+                });
             },
 
             onLicenseChanged: function(params) {
