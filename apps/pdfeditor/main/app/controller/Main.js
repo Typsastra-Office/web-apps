@@ -42,6 +42,7 @@
  */
 
 define([
+    'pdfeditor/main/app/lib/PdfTextLayerInspector',
     'core',
     'irregularstack',
     'common/main/lib/component/Window',
@@ -58,8 +59,7 @@ define([
     'common/main/lib/view/OpenDialog',
     'common/main/lib/collection/TextArt',
     'common/main/lib/view/UserNameDialog',
-    'pdfeditor/main/app/lib/PdfTextLayerInspector',
-], function () {
+], function (PdfTextLayerInspector) {
     'use strict';
 
     PDFE.Controllers.Main = Backbone.Controller.extend(_.extend((function() {
@@ -1213,30 +1213,40 @@ define([
              * and the document properties can tell the user whether the text is
              * already searchable or OCR is still required. The result is
              * broadcast because both places render it independently.
+             *
+             * This is advisory only, so it must never be able to interrupt
+             * editing: any failure is reported as an unchecked result.
              */
             inspectKhmerTextLayer: function () {
                 var me = this;
-                var viewer = me.api && me.api.DocumentRenderer;
-                if (!viewer || 'function' !== typeof viewer.getFileNativeBinary) {
+
+                function unchecked() {
                     Common.NotificationCenter.trigger('pdf:textlayer', { status: 'unknown' });
-                    return;
                 }
 
-                var bytes = null;
                 try {
-                    bytes = viewer.getFileNativeBinary();
+                    var viewer = me.api && me.api.DocumentRenderer;
+                    if (!viewer || 'function' !== typeof viewer.getFileNativeBinary) {
+                        unchecked();
+                        return;
+                    }
+
+                    var bytes = viewer.getFileNativeBinary();
+                    if (!bytes) {
+                        unchecked();
+                        return;
+                    }
+
+                    return PdfTextLayerInspector.inspect(bytes).then(function (result) {
+                        Common.NotificationCenter.trigger('pdf:textlayer', result);
+                    })['catch'](function () {
+                        unchecked();
+                    });
                 } catch (error) {
-                    bytes = null;
+                    if (window.console && console.warn)
+                        console.warn('Khmer text layer inspection unavailable', error);
+                    unchecked();
                 }
-
-                if (!bytes) {
-                    Common.NotificationCenter.trigger('pdf:textlayer', { status: 'unknown' });
-                    return;
-                }
-
-                return PdfTextLayerInspector.inspect(bytes).then(function (result) {
-                    Common.NotificationCenter.trigger('pdf:textlayer', result);
-                });
             },
 
             onLicenseChanged: function(params) {
