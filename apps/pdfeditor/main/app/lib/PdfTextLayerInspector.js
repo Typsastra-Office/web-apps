@@ -126,11 +126,43 @@ define([], function(){
         try { return common.getKhmerSpellchecker(); } catch (error) { return null; }
     }
 
-    function pageText(textContent) {
+    function pageText(textContent, fontNames) {
         var text = '';
-        for (var i = 0; i < textContent.items.length; i++)
-            text += textContent.items[i].str + (textContent.items[i].hasEOL ? '\n' : '');
+        for (var i = 0; i < textContent.items.length; i++) {
+            var item = textContent.items[i];
+            if (fontNames && !fontNames[item.fontName]) continue;
+            text += item.str + (item.hasEOL ? '\n' : '');
+        }
         return text;
+    }
+
+    /**
+     * A preserved source PDF may have broken Khmer mappings alongside a valid
+     * invisible OCR layer. pdf.js gives both streams generic font-family names,
+     * so resolve the embedded font objects before identifying the OCR text. The
+     * metric precheck avoids parsing operator lists for ordinary documents.
+     */
+    function logicalLayerText(page, content) {
+        var candidates = [], styles = content.styles || {};
+        Object.keys(styles).forEach(function(name){
+            var style = styles[name];
+            if (style && Math.abs(style.ascent - 0.74) < 0.001 &&
+                Math.abs(style.descent + 0.26) < 0.001)
+                candidates.push(name);
+        });
+        if (!candidates.length) return Promise.resolve('');
+
+        return page.getOperatorList().then(function(){
+            var fonts = {};
+            candidates.forEach(function(name){
+                try {
+                    var font = page.commonObjs.get(name);
+                    if (font && /^(?:[A-Z]{6}\+)?TypsastraLogical$/.test(font.name))
+                        fonts[name] = true;
+                } catch (error) {}
+            });
+            return pageText(content, fonts);
+        }).catch(function(){ return ''; });
     }
 
     function khmerWords(text) {
@@ -245,7 +277,7 @@ define([], function(){
                 result.totalPages = doc.numPages;
 
                 var numbers = sampledPageNumbers(doc.numPages, cfg.samplePages);
-                var texts = [];
+                var texts = [], logicalTexts = [];
                 var chain = Promise.resolve();
 
                 numbers.forEach(function(pageNumber){
@@ -253,23 +285,44 @@ define([], function(){
                         return doc.getPage(pageNumber).then(function(page){
                             return page.getTextContent().then(function(content){
                                 texts.push(pageText(content).slice(0, cfg.maxCharsPerPage));
-                                result.sampledPages++;
-                                page.cleanup();
+                                return logicalLayerText(page, content).then(function(logicalText){
+                                    logicalTexts.push(logicalText.slice(0, cfg.maxCharsPerPage));
+                                    result.sampledPages++;
+                                    page.cleanup();
+                                });
                             });
                         });
                     });
                 });
 
-                return chain.then(function(){ return texts; });
+                return chain.then(function(){ return {all: texts, logical: logicalTexts}; });
             })
-            .then(function(texts){
+            .then(function(layers){
                 // Cheap gate: a document without any Khmer never needs the
                 // dictionary, which is a multi-megabyte download.
-                var i, khmerChars = 0, coengChars = 0;
+                var i, khmerChars = 0, coengChars = 0, logicalKhmer = 0;
+                var texts = layers.all;
                 for (i = 0; i < texts.length; i++) {
                     var counts = countKhmer(texts[i]);
                     khmerChars += counts.khmer;
                     coengChars += counts.coeng;
+                    logicalKhmer += countKhmer(layers.logical[i]).khmer;
+                }
+
+                // The source text remains selectable, but a substantial OCR
+                // layer with its own Unicode font is a better measure of whether
+                // Khmer search actually works. A tiny footer in that font is
+                // insufficient to excuse an otherwise broken document. The OCR
+                // text still has to pass the same COENG and dictionary gates.
+                if (logicalKhmer && logicalKhmer >= khmerChars * 0.25) {
+                    texts = layers.logical;
+                    khmerChars = 0;
+                    coengChars = 0;
+                    for (i = 0; i < texts.length; i++) {
+                        counts = countKhmer(texts[i]);
+                        khmerChars += counts.khmer;
+                        coengChars += counts.coeng;
+                    }
                 }
 
                 result.khmerChars = khmerChars;
