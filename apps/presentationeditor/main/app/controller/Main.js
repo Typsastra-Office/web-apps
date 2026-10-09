@@ -955,17 +955,18 @@ define([
 
                 // Khmer text settings: segmenter engine for line breaking and spelling policy
                 var khmerValue = Common.localStorage.getItem("settings-khmer-line-break");
-                khmerValue = (khmerValue === 'viterbi') ? 'viterbi' : 'icu';
+                khmerValue = (khmerValue === 'icu') ? 'icu' : 'viterbi';
                 Common.Utils.InternalSettings.set("settings-khmer-line-break", khmerValue);
                 if (window.AscCommon && typeof window.AscCommon["setKhmerLineBreakEngine"] === 'function')
                     window.AscCommon["setKhmerLineBreakEngine"](khmerValue);
                 khmerValue = Common.localStorage.getItem("settings-khmer-spell-policy");
-                khmerValue = (khmerValue === 'community') ? 'community' : 'official';
+                khmerValue = (khmerValue === 'lexical' || khmerValue === 'official') ? 'lexical' : 'practical';
                 Common.Utils.InternalSettings.set("settings-khmer-spell-policy", khmerValue);
                 if (window.AscCommon && typeof window.AscCommon["getKhmerSpellchecker"] === 'function') {
                     var khmerSpellchecker = window.AscCommon["getKhmerSpellchecker"]();
                     if (khmerSpellchecker && typeof khmerSpellchecker["setSpellingPolicy"] === 'function')
-                        khmerSpellchecker["setSpellingPolicy"]({accuracy: 'visual', authority: khmerValue});
+                        khmerSpellchecker["setSpellingPolicy"]({accuracy: 'lexical',
+                            authority: khmerValue === 'practical' ? 'community' : 'official'});
                 }
                 me.api.asc_setSpellCheck(value);
                 Common.NotificationCenter.trigger('spelling:turn', value ? 'on' : 'off', true); // only toggle buttons

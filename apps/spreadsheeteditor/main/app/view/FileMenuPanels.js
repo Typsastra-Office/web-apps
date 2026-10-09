@@ -931,8 +931,8 @@ define([], function () {
                 menuStyle: 'dropdown',
                 editable: false,
                 data: [
-                    { value: 'official', displayValue: this.txtKhmerPolicyOfficial },
-                    { value: 'community', displayValue: this.txtKhmerPolicyPractical }
+                    { value: 'practical', displayValue: this.txtKhmerPolicyPractical },
+                    { value: 'lexical', displayValue: this.txtKhmerPolicyLexical }
                 ]
             });
 
@@ -1128,16 +1128,20 @@ define([], function () {
 
             if (typeof common["getKhmerSpellchecker"] === 'function') {
                 var spellchecker = common["getKhmerSpellchecker"]();
-                if (spellchecker && typeof spellchecker["setSpellingPolicy"] === 'function')
-                    spellchecker["setSpellingPolicy"]({accuracy: 'visual', authority: this.cmbKhmerSpellPolicy.getValue()});
+                if (spellchecker && typeof spellchecker["setSpellingPolicy"] === 'function') {
+                    var policy = this.cmbKhmerSpellPolicy.getValue();
+                    spellchecker["setSpellingPolicy"]({accuracy: 'lexical',
+                        authority: policy === 'practical' ? 'community' : 'official'});
+                }
             }
         },
 
         updateSettings: function() {
             var khmerBreak = Common.Utils.InternalSettings.get("settings-khmer-line-break");
-            this.cmbKhmerLineBreak.setValue(khmerBreak === 'viterbi' ? 'viterbi' : 'icu');
+            this.cmbKhmerLineBreak.setValue(khmerBreak === 'icu' ? 'icu' : 'viterbi');
             var khmerPolicy = Common.Utils.InternalSettings.get("settings-khmer-spell-policy");
-            this.cmbKhmerSpellPolicy.setValue(khmerPolicy === 'community' ? 'community' : 'official');
+            this.cmbKhmerSpellPolicy.setValue(khmerPolicy === 'lexical' || khmerPolicy === 'official'
+                ? 'lexical' : 'practical');
             var value = Common.Utils.InternalSettings.get("sse-settings-zoom");
             value = (value!==null) ? parseInt(value) : (this.mode.customization && this.mode.customization.zoom ? parseInt(this.mode.customization.zoom) : 100);
             var item = this.cmbZoom.store.findWhere({value: value});
@@ -1507,8 +1511,8 @@ define([], function () {
         strKhmerSpellPolicy: 'Khmer spell-check policy',
         txtKhmerLineBreakIcu: 'ICU (Intl.Segmenter)',
         txtKhmerLineBreakViterbi: 'Khmer Viterbi segmenter',
-        txtKhmerPolicyOfficial: 'Visual + official',
-        txtKhmerPolicyPractical: 'Visual + practical',
+        txtKhmerPolicyPractical: 'Practical',
+        txtKhmerPolicyLexical: 'Lexical',
         txtWin: 'as Windows',
         txtMac: 'as OS X',
         txtNative: 'Native',

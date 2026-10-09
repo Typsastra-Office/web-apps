@@ -583,8 +583,8 @@ define([], function () {
                 menuStyle: 'dropdown',
                 editable: false,
                 data: [
-                    { value: 'official', displayValue: this.txtKhmerPolicyOfficial },
-                    { value: 'community', displayValue: this.txtKhmerPolicyPractical }
+                    { value: 'practical', displayValue: this.txtKhmerPolicyPractical },
+                    { value: 'lexical', displayValue: this.txtKhmerPolicyLexical }
                 ]
             });
 
@@ -1032,8 +1032,11 @@ define([], function () {
 
             if (typeof common["getKhmerSpellchecker"] === 'function') {
                 var spellchecker = common["getKhmerSpellchecker"]();
-                if (spellchecker && typeof spellchecker["setSpellingPolicy"] === 'function')
-                    spellchecker["setSpellingPolicy"]({accuracy: 'visual', authority: this.cmbKhmerSpellPolicy.getValue()});
+                if (spellchecker && typeof spellchecker["setSpellingPolicy"] === 'function') {
+                    var policy = this.cmbKhmerSpellPolicy.getValue();
+                    spellchecker["setSpellingPolicy"]({accuracy: 'lexical',
+                        authority: policy === 'practical' ? 'community' : 'official'});
+                }
             }
         },
 
@@ -1091,9 +1094,10 @@ define([], function () {
             }
 
             var khmerBreak = Common.Utils.InternalSettings.get("settings-khmer-line-break");
-            this.cmbKhmerLineBreak.setValue(khmerBreak === 'viterbi' ? 'viterbi' : 'icu');
+            this.cmbKhmerLineBreak.setValue(khmerBreak === 'icu' ? 'icu' : 'viterbi');
             var khmerPolicy = Common.Utils.InternalSettings.get("settings-khmer-spell-policy");
-            this.cmbKhmerSpellPolicy.setValue(khmerPolicy === 'community' ? 'community' : 'official');
+            this.cmbKhmerSpellPolicy.setValue(khmerPolicy === 'lexical' || khmerPolicy === 'official'
+                ? 'lexical' : 'practical');
 
             this.chAlignGuides.setValue(Common.Utils.InternalSettings.get("de-settings-showsnaplines"));
             this.chCompatible.setValue(Common.Utils.InternalSettings.get("de-settings-compatible"));
@@ -1303,8 +1307,8 @@ define([], function () {
         strKhmerSpellPolicy: 'Khmer spell-check policy',
         txtKhmerLineBreakIcu: 'ICU (Intl.Segmenter)',
         txtKhmerLineBreakViterbi: 'Khmer Viterbi segmenter',
-        txtKhmerPolicyOfficial: 'Visual + official',
-        txtKhmerPolicyPractical: 'Visual + practical',
+        txtKhmerPolicyPractical: 'Practical',
+        txtKhmerPolicyLexical: 'Lexical',
         txtKhmer: 'Khmer',
         textAlignGuides: 'Alignment Guides',
         strCoAuthMode: 'Co-editing mode',
