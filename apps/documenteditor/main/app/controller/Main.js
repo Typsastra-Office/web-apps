@@ -1382,18 +1382,19 @@ define([
 
                 // Khmer text settings: word-segmentation engine for line breaking and spelling policy
                 value = Common.localStorage.getItem("settings-khmer-line-break");
-                value = (value === 'viterbi') ? 'viterbi' : 'icu';
+                value = (value === 'icu') ? 'icu' : 'viterbi';
                 Common.Utils.InternalSettings.set("settings-khmer-line-break", value);
                 if (window.AscCommon && typeof window.AscCommon["setKhmerLineBreakEngine"] === 'function')
                     window.AscCommon.setKhmerLineBreakEngine(value);
 
                 value = Common.localStorage.getItem("settings-khmer-spell-policy");
-                value = (value === 'community') ? 'community' : 'official';
+                value = (value === 'lexical' || value === 'official') ? 'lexical' : 'practical';
                 Common.Utils.InternalSettings.set("settings-khmer-spell-policy", value);
                 if (window.AscCommon && typeof window.AscCommon["getKhmerSpellchecker"] === 'function') {
                     var khmerSpellchecker = window.AscCommon.getKhmerSpellchecker();
                     if (khmerSpellchecker && typeof khmerSpellchecker["setSpellingPolicy"] === 'function')
-                        khmerSpellchecker.setSpellingPolicy({accuracy: 'visual', authority: value});
+                        khmerSpellchecker.setSpellingPolicy({accuracy: 'lexical',
+                            authority: value === 'practical' ? 'community' : 'official'});
                 }
 
                 // Document language: detect it from the document content on load
