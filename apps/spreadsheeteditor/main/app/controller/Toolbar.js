@@ -1509,7 +1509,7 @@ define([
                     }
                 } else {
                     var info = new Asc.asc_CFormatCellsInfo();
-                    info.asc_setType(Asc.c_oAscNumFormatType.Accounting);
+                    info.asc_setType(item.value === 0x0453 ? Asc.c_oAscNumFormatType.Currency : Asc.c_oAscNumFormatType.Accounting);
                     info.asc_setSeparator(false);
                     info.asc_setSymbol(item.value);
                     var format = this.api.asc_getFormatCells(info);

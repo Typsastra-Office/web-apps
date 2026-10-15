@@ -1664,6 +1664,20 @@ define([
                     dataHintDirection: 'bottom'
                 });
 
+                var currencyMenuItems = [];
+                if (/^km(?:[-_]|$)/i.test(Common.Utils.InternalSettings.get("sse-config-lang") || '')) {
+                    currencyMenuItems.push({caption: me.txtRiel, value: 0x0453});
+                }
+                currencyMenuItems.push(
+                    {caption: me.txtDollar, value: 0x0409},
+                    {caption: me.txtEuro, value: 0x0407},
+                    {caption: me.txtPound, value: 0x0809},
+                    {caption: me.txtRouble, value: 0x0419},
+                    {caption: me.txtYen, value: 0x0411},
+                    {caption: '--'},
+                    {caption: me.textMoreFormats, value: -1}
+                );
+
                 me.btnCurrencyStyle = new Common.UI.Button({
                     id          : 'id-toolbar-btn-accounting-style',
                     cls         : 'btn-toolbar',
@@ -1673,32 +1687,7 @@ define([
                     split       : true,
                     menu        : new Common.UI.Menu({
                         style: 'min-width: 120px;',
-                        items : [
-                            {
-                                caption : me.txtDollar,
-                                value   : 0x0409 // $ en-US
-                            },
-                            {
-                                caption : me.txtEuro,
-                                value   : 0x0407 // € de-DE
-                            },
-                            {
-                                caption : me.txtPound,
-                                value   : 0x0809 // £ en-GB
-                            },
-                            {
-                                caption : me.txtRouble,
-                                value   : 0x0419 // ₽ ru-RU
-                            },
-                            {
-                                caption : me.txtYen,
-                                value   : 0x0411 // ¥ ja-JP
-                            },{caption: '--'},
-                            {
-                                caption : me.textMoreFormats,
-                                value   : -1
-                            }
-                        ]
+                        items : currencyMenuItems
                     }),
                     action: 'accounting-style',
                     dataHint    : '1',

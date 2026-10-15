@@ -60,7 +60,7 @@ define([
 
         options: {
             date: undefined,
-            firstday: 0 // 0 - sunday, 1 - monday
+            firstday: 1 // 0 - sunday, 1 - monday
         },
 
         initialize : function(options) {
