@@ -376,6 +376,41 @@ define([
         },
 
         getCaptionWithBreaks: function (caption) {
+            // Split Khmer captions only at spaces and keep the full words intact.
+            if (document.body && document.body.getAttribute('applang') === 'km') {
+                var kmWords = caption.trim().split(/\s+/),
+                    kmMaxWidth = 90,
+                    bestSplit = -1,
+                    bestScore = Infinity;
+
+                if (kmWords.length < 2 || getWidthOfCaption(caption) <= kmMaxWidth) {
+                    return null;
+                }
+
+                var containAnd = kmWords.indexOf('&');
+                if (containAnd > 0) {
+                    kmWords[containAnd - 1] += ' &';
+                    kmWords.splice(containAnd, 1);
+                }
+
+                for (var i = 1; i < kmWords.length; i++) {
+                    var firstLine = kmWords.slice(0, i).join(' '),
+                        secondLine = kmWords.slice(i).join(' '),
+                        firstWidth = getWidthOfCaption(firstLine),
+                        secondWidth = getWidthOfCaption(secondLine),
+                        score = Math.max(firstWidth, secondWidth) + Math.abs(firstWidth - secondWidth) * 0.15;
+                    if (score < bestScore) {
+                        bestScore = score;
+                        bestSplit = i;
+                    }
+                }
+
+                if (bestSplit > 0) {
+                    return kmWords.slice(0, bestSplit).join(' ') + '<br>' + kmWords.slice(bestSplit).join(' ');
+                }
+                return null;
+            }
+
             var words = caption.split(' '),
                 newCaption = null,
                 maxWidth = 160 - 4, //85 - 4
