@@ -48,8 +48,9 @@ define([
 
     DE.Views.ParagraphSettingsAdvanced = Common.Views.AdvancedSettingsWindow.extend(_.extend({
         options: {
-            contentWidth: 370,
+            contentWidth: 430,
             contentHeight: 340,
+            contentStyle: 'overflow-y: auto; overflow-x: hidden;',
             toggleGroup: 'paragraph-adv-settings-group',
             storageName: 'de-para-settings-adv-category'
         },
@@ -108,6 +109,7 @@ define([
                 {displayValue: this.textHanging, value: c_paragraphSpecial.HANGING, defaultValue: 12.7}
             ];
             this.CurSpecial = undefined;
+            this._scriptFontRowId = 0;
 
             this._arrTextAlignment = [
                 {displayValue: this.textTabLeft, value: c_paragraphTextAlignment.LEFT},
@@ -148,6 +150,7 @@ define([
             Common.Views.AdvancedSettingsWindow.prototype.render.call(this);
 
             var me = this;
+            this.initScriptFontControls();
 
             // Indents & Placement
 
@@ -792,6 +795,7 @@ define([
                         me.chStrike.focus();
                         if (e && (e instanceof jQuery.Event))
                             me.api.SetDrawImagePlaceParagraph('paragraphadv-font-img', me._originalProps || new Asc.asc_CParagraphProperty());
+                        me.updateScriptFontPreview();
                         break;
                     case 4:
                         me.numDefaultTab.focus();
@@ -804,7 +808,14 @@ define([
         },
 
         onAnimateAfter: function() {
-            (this.getActiveCategory()==3) && this.api.SetDrawImagePlaceParagraph('paragraphadv-font-img', this._originalProps || new Asc.asc_CParagraphProperty());
+            if (this.getActiveCategory() === 3) {
+                this.api.SetDrawImagePlaceParagraph('paragraphadv-font-img', this._originalProps || new Asc.asc_CParagraphProperty());
+                this.updateScriptFontPreview();
+            }
+        },
+
+        fixHeight: function() {
+            // Keep the advanced dialog within its configured height; the content pane scrolls instead.
         },
 
         getSettings: function() {
@@ -886,7 +897,11 @@ define([
                 this._changedProps.asc_putSpacing(this.Spacing);
             }
 
-            return { paragraphProps: this._changedProps, borderProps: {borderSize: this.BorderSize, borderColor: this.btnBorderColor.isAutoColor() ? 'auto' : this.btnBorderColor.color} };
+            return {
+                paragraphProps: this._changedProps,
+                borderProps: {borderSize: this.BorderSize, borderColor: this.btnBorderColor.isAutoColor() ? 'auto' : this.btnBorderColor.color},
+                scriptFontSettings: this.getScriptFontSettings()
+            };
         },
 
         _setDefaults: function(props) {
@@ -1537,6 +1552,320 @@ define([
             if (this._changedProps) {
                 this._changedProps.put_Ligatures(record.value);
             }
+            this.updateScriptFontPreview();
+        },
+
+        getCurrentDocumentScript: function() {
+            var lang = '';
+            if (this.api && this.api.asc_getDefaultLanguage && Common.util.LanguageInfo) {
+                var info = Common.util.LanguageInfo.getLocalLanguageName(this.api.asc_getDefaultLanguage());
+                lang = info && info[0] ? info[0].toLowerCase() : '';
+            }
+            var scriptSubtag = lang.split('-').find(function(part) { return part.length === 4; });
+            var scriptMap = {
+                latn: 'HB_SCRIPT_LATIN', cyrl: 'HB_SCRIPT_CYRILLIC', arab: 'HB_SCRIPT_ARABIC', hebr: 'HB_SCRIPT_HEBREW',
+                grek: 'HB_SCRIPT_GREEK', deva: 'HB_SCRIPT_DEVANAGARI', thai: 'HB_SCRIPT_THAI', laoo: 'HB_SCRIPT_LAO',
+                mymr: 'HB_SCRIPT_MYANMAR', hani: 'HB_SCRIPT_HAN', hira: 'HB_SCRIPT_HIRAGANA', kana: 'HB_SCRIPT_KATAKANA',
+                hang: 'HB_SCRIPT_HANGUL', armn: 'HB_SCRIPT_ARMENIAN', geor: 'HB_SCRIPT_GEORGIAN', beng: 'HB_SCRIPT_BENGALI',
+                guru: 'HB_SCRIPT_GURMUKHI', gujr: 'HB_SCRIPT_GUJARATI', taml: 'HB_SCRIPT_TAMIL', telu: 'HB_SCRIPT_TELUGU',
+                knda: 'HB_SCRIPT_KANNADA', mlym: 'HB_SCRIPT_MALAYALAM', sinh: 'HB_SCRIPT_SINHALA', ethi: 'HB_SCRIPT_ETHIOPIC'
+            };
+            if (scriptSubtag && scriptMap[scriptSubtag])
+                return scriptMap[scriptSubtag];
+
+            var languageMap = {
+                km: 'HB_SCRIPT_KHMER', ar: 'HB_SCRIPT_ARABIC', fa: 'HB_SCRIPT_ARABIC', ur: 'HB_SCRIPT_ARABIC', ps: 'HB_SCRIPT_ARABIC',
+                hi: 'HB_SCRIPT_DEVANAGARI', mr: 'HB_SCRIPT_DEVANAGARI', ne: 'HB_SCRIPT_DEVANAGARI', th: 'HB_SCRIPT_THAI',
+                lo: 'HB_SCRIPT_LAO', my: 'HB_SCRIPT_MYANMAR', zh: 'HB_SCRIPT_HAN', ja: 'HB_SCRIPT_HIRAGANA', ko: 'HB_SCRIPT_HANGUL',
+                ru: 'HB_SCRIPT_CYRILLIC', uk: 'HB_SCRIPT_CYRILLIC', bg: 'HB_SCRIPT_CYRILLIC', be: 'HB_SCRIPT_CYRILLIC',
+                mk: 'HB_SCRIPT_CYRILLIC', ky: 'HB_SCRIPT_CYRILLIC', kk: 'HB_SCRIPT_CYRILLIC', mn: 'HB_SCRIPT_CYRILLIC',
+                tg: 'HB_SCRIPT_CYRILLIC', he: 'HB_SCRIPT_HEBREW', yi: 'HB_SCRIPT_HEBREW', el: 'HB_SCRIPT_GREEK',
+                hy: 'HB_SCRIPT_ARMENIAN', ka: 'HB_SCRIPT_GEORGIAN', bn: 'HB_SCRIPT_BENGALI', pa: 'HB_SCRIPT_GURMUKHI',
+                gu: 'HB_SCRIPT_GUJARATI', ta: 'HB_SCRIPT_TAMIL', te: 'HB_SCRIPT_TELUGU', kn: 'HB_SCRIPT_KANNADA',
+                ml: 'HB_SCRIPT_MALAYALAM', si: 'HB_SCRIPT_SINHALA', am: 'HB_SCRIPT_ETHIOPIC'
+            };
+            return languageMap[lang.split('-')[0]] || 'HB_SCRIPT_LATIN';
+        },
+
+        getDefaultScriptFontConfiguration: function(script) {
+            var font = null;
+            var size = null;
+            if (this.api && this.api.get_TextProps) {
+                var textProps = this.api.get_TextProps();
+                var textPr = textProps && textProps.get_TextPr ? textProps.get_TextPr() : null;
+                var fontFamily = textPr && textPr.get_FontFamily ? textPr.get_FontFamily() : null;
+                font = fontFamily && fontFamily.get_Name ? fontFamily.get_Name() : null;
+                size = textPr && textPr.get_FontSize ? textPr.get_FontSize() : null;
+            }
+            if (!font && this.api && this.api.getDefaultFontFamily)
+                font = this.api.getDefaultFontFamily();
+            if (!(size > 0) && this.api && this.api.getDefaultFontSize)
+                size = this.api.getDefaultFontSize();
+            return {script: script, font: font, size: size || 12};
+        },
+
+        getAvailableScriptFontNames: function() {
+            var toolbarController = DE.getController('Toolbar');
+            var toolbar = toolbarController && toolbarController.getView('Toolbar');
+            var store = toolbar && toolbar.cmbFontName && toolbar.cmbFontName.store;
+            var fontController = DE.getController('Common.Controllers.Fonts');
+            if ((!store || !store.length) && fontController) {
+                store = fontController.store && fontController.store();
+                if ((!store || !store.length) && fontController.getCollection)
+                    store = fontController.getCollection('Common.Collections.Fonts');
+            }
+
+            var names = [];
+            if (store && store.each) {
+                store.each(function(font) {
+                    var name = font && font.get ? font.get('name') : font && font.name;
+                    var cloneId = font && font.get ? font.get('cloneid') : font && font.cloneid;
+                    if (name && !cloneId)
+                        names.push(name);
+                });
+            }
+            return _.uniq(names).sort(function(left, right) { return left.localeCompare(right); });
+        },
+
+        onScriptFontListLoaded: function(store) {
+            this.scriptFontNames = this.getAvailableScriptFontNames();
+            if (!this.scriptFontNames.length && store && store.each) {
+                store.each(function(font) {
+                    var name = font && font.get ? font.get('name') : font && font.name;
+                    var cloneId = font && font.get ? font.get('cloneid') : font && font.cloneid;
+                    name && !cloneId && this.scriptFontNames.push(name);
+                }, this);
+                this.scriptFontNames = _.uniq(this.scriptFontNames).sort(function(left, right) { return left.localeCompare(right); });
+            }
+
+            this.scriptFontRows.find('.script-font-family').each(function() {
+                var $font = $(this);
+                var selectedFont = $font.val();
+                $font.empty().append($('<option></option>').val('').text(this.textChooseFont));
+                _.each(this.scriptFontNames, function(fontName) {
+                    $font.append($('<option></option>').val(fontName).text(fontName));
+                });
+                if (selectedFont && !_.contains(this.scriptFontNames, selectedFont))
+                    $font.append($('<option></option>').val(selectedFont).text(selectedFont));
+                $font.val(selectedFont || '');
+            }.bind(this));
+            this.updateScriptFontPreview();
+        },
+
+        initScriptFontControls: function() {
+            this.scriptFontRows = $('#paragraphadv-script-font-rows');
+            this.scriptFontPreview = $('#paragraphadv-font-img');
+            this.scriptFontPreviewPane = this.scriptFontPreview.closest('.doc-content-color');
+            this.scriptFontPreviewRuleLeft = $('#paragraphadv-font-preview-rule-left');
+            this.scriptFontPreviewRuleRight = $('#paragraphadv-font-preview-rule-right');
+            this.scriptFontRows.off('.scriptFonts');
+            this.scriptFontRows
+                .on('change.scriptFonts input.scriptFonts', 'select, input', _.bind(this.updateScriptFontPreview, this))
+                .on('click.scriptFonts', '.script-font-remove', _.bind(this.onRemoveScriptFontRow, this));
+            $('#paragraphadv-script-font-add').off('click.scriptFonts').on('click.scriptFonts', _.bind(function() {
+                this.addScriptFontRow();
+            }, this));
+            this._scriptFontLoadHandler = _.bind(this.onScriptFontListLoaded, this);
+            Common.NotificationCenter.on('fonts:load', this._scriptFontLoadHandler);
+            this.on('close', _.bind(function() {
+                Common.NotificationCenter.off('fonts:load', this._scriptFontLoadHandler);
+            }, this));
+            if (window.ResizeObserver) {
+                this._scriptFontResizeObserver = new window.ResizeObserver(_.debounce(_.bind(this.updateScriptFontPreview, this), 50));
+                this._scriptFontResizeObserver.observe(this.scriptFontPreviewPane[0]);
+                this.on('close', _.bind(function() {
+                    this._scriptFontResizeObserver && this._scriptFontResizeObserver.disconnect();
+                }, this));
+            }
+            this.scriptFontNames = this.getAvailableScriptFontNames();
+            this.scriptFontScripts = this.api && this.api.asc_getScriptFontScripts ? this.api.asc_getScriptFontScripts() : [];
+            if (!this.scriptFontScripts.length) {
+                this.scriptFontScripts = [
+                    {script: 'HB_SCRIPT_LATIN', label: 'Latin'}, {script: 'HB_SCRIPT_KHMER', label: 'Khmer'},
+                    {script: 'HB_SCRIPT_ARABIC', label: 'Arabic'}, {script: 'HB_SCRIPT_CYRILLIC', label: 'Cyrillic'},
+                    {script: 'HB_SCRIPT_GREEK', label: 'Greek'}, {script: 'HB_SCRIPT_HEBREW', label: 'Hebrew'},
+                    {script: 'HB_SCRIPT_DEVANAGARI', label: 'Devanagari'}, {script: 'HB_SCRIPT_THAI', label: 'Thai'},
+                    {script: 'HB_SCRIPT_LAO', label: 'Lao'}, {script: 'HB_SCRIPT_MYANMAR', label: 'Myanmar'},
+                    {script: 'HB_SCRIPT_HAN', label: 'Han'}, {script: 'HB_SCRIPT_HIRAGANA', label: 'Hiragana'},
+                    {script: 'HB_SCRIPT_KATAKANA', label: 'Katakana'}, {script: 'HB_SCRIPT_HANGUL', label: 'Hangul'}
+                ];
+            }
+            var settings = this.api && this.api.asc_getScriptFontSettings ? this.api.asc_getScriptFontSettings() : [];
+            var defaultConfiguration = this.getDefaultScriptFontConfiguration(this.getCurrentDocumentScript());
+            if (settings.length) {
+                _.each(settings, function(setting) {
+                    var configuration = _.extend({}, defaultConfiguration, setting);
+                    configuration.font || (configuration.font = defaultConfiguration.font);
+                    configuration.size || (configuration.size = defaultConfiguration.size);
+                    this.addScriptFontRow(configuration);
+                }, this);
+            } else {
+                this.addScriptFontRow(defaultConfiguration);
+            }
+            this.updateScriptFontPreview();
+        },
+
+        addScriptFontRow: function(configuration) {
+            var samples = {
+                HB_SCRIPT_LATIN: 'Hello', HB_SCRIPT_KHMER: 'សួស្តី', HB_SCRIPT_ARABIC: 'مرحبا',
+                HB_SCRIPT_CYRILLIC: 'Привет', HB_SCRIPT_GREEK: 'Γειά σου', HB_SCRIPT_HEBREW: 'שלום',
+                HB_SCRIPT_DEVANAGARI: 'नमस्ते', HB_SCRIPT_THAI: 'สวัสดี', HB_SCRIPT_LAO: 'ສະບາຍດີ',
+                HB_SCRIPT_MYANMAR: 'မင်္ဂလာပါ', HB_SCRIPT_HAN: '你好', HB_SCRIPT_HIRAGANA: 'こんにちは',
+                HB_SCRIPT_KATAKANA: 'コンニチハ', HB_SCRIPT_HANGUL: '안녕하세요'
+            };
+            var scripts = _.map(this.scriptFontScripts || [], function(item) {
+                return [item.script, item.label, samples[item.script] || item.label];
+            });
+            var usedScripts = {};
+            this.scriptFontRows.find('.script-font-script').each(function() {
+                var value = $(this).val();
+                value && (usedScripts[value] = true);
+            });
+            var legacyScriptNames = {Latn: 'HB_SCRIPT_LATIN', Khmr: 'HB_SCRIPT_KHMER', Arab: 'HB_SCRIPT_ARABIC', Cyrl: 'HB_SCRIPT_CYRILLIC', Thai: 'HB_SCRIPT_THAI',
+                Grek: 'HB_SCRIPT_GREEK', Hebr: 'HB_SCRIPT_HEBREW', Deva: 'HB_SCRIPT_DEVANAGARI', Laoo: 'HB_SCRIPT_LAO',
+                Mymr: 'HB_SCRIPT_MYANMAR', Hani: 'HB_SCRIPT_HAN', Hira: 'HB_SCRIPT_HIRAGANA', Kana: 'HB_SCRIPT_KATAKANA', Hang: 'HB_SCRIPT_HANGUL'};
+            var configurationScript = configuration && (legacyScriptNames[configuration.script] || configuration.script);
+            var availableScript = configuration ? _.find(scripts, function(item) { return item[0] === configurationScript; }) :
+                _.find(scripts, function(item) { return !usedScripts[item[0]]; });
+            if (!availableScript)
+                return;
+
+            var id = ++this._scriptFontRowId;
+            var $row = $('<div class="script-font-row" style="display:grid;grid-template-columns:minmax(90px,1fr) minmax(100px,1.4fr) 68px 28px;gap:6px;align-items:center;padding:6px 0;border-bottom:1px solid #d8d8d8;"></div>');
+            var $script = $('<select class="form-control script-font-script" aria-label="' + _.escape(this.textScript) + '"></select>');
+            $script.append($('<option></option>').val('').text(this.textChooseScript));
+            _.each(scripts, function(item) {
+                $script.append($('<option></option>').val(item[0]).text(item[1]));
+            });
+            $script.val(availableScript[0]);
+
+            var $font = $('<select class="form-control script-font-family" aria-label="' + _.escape(this.textFont) + '"></select>');
+            var $size = $('<input type="number" class="form-control script-font-size" aria-label="' + _.escape(this.textFontSize) + '" min="1" max="300" step="0.5" value="' + (configuration ? configuration.size : 12) + '">');
+            var $remove = $('<button type="button" class="btn btn-text-default script-font-remove" style="width:28px;min-width:0;max-width:28px;height:28px;min-height:0;padding:0;line-height:1;display:flex;align-items:center;justify-content:center;" aria-label="' + _.escape(this.textRemove) + '">×</button>');
+            $row.attr('data-script-font-row', id).append($script, $font, $size, $remove);
+            this.scriptFontRows.append($row);
+
+            $font.append($('<option></option>').val('').text(this.textChooseFont));
+            var fontNames = this.scriptFontNames || [];
+            _.each(fontNames, function(fontName) {
+                $font.append($('<option></option>').val(fontName).text(fontName));
+            });
+            if (configuration && !_.contains(fontNames, configuration.font))
+                $font.append($('<option></option>').val(configuration.font).text(configuration.font));
+            $font.val(configuration ? configuration.font : '');
+            this.updateScriptFontPreview();
+        },
+
+        onRemoveScriptFontRow: function(event) {
+            $(event.currentTarget).closest('.script-font-row').remove();
+            this.updateScriptFontPreview();
+        },
+
+        getScriptFontSettings: function() {
+            var settings = [];
+            this.scriptFontRows.find('.script-font-row').each(function() {
+                var $row = $(this);
+                var script = $row.find('.script-font-script').val();
+                var font = String($row.find('.script-font-family').val() || '').trim();
+                var size = parseFloat($row.find('.script-font-size').val());
+                if (script && font && size > 0)
+                    settings.push({script: script, font: font, size: size});
+            });
+            return settings;
+        },
+
+        updateScriptFontPreview: function() {
+            if (!this.scriptFontRows || !this.scriptFontPreview)
+                return;
+
+            var samples = {
+                HB_SCRIPT_LATIN: 'Hello', HB_SCRIPT_KHMER: 'សួស្តី', HB_SCRIPT_ARABIC: 'مرحبا',
+                HB_SCRIPT_CYRILLIC: 'Привет', HB_SCRIPT_GREEK: 'Γειά σου', HB_SCRIPT_HEBREW: 'שלום',
+                HB_SCRIPT_DEVANAGARI: 'नमस्ते', HB_SCRIPT_THAI: 'สวัสดี', HB_SCRIPT_LAO: 'ສະບາຍດີ',
+                HB_SCRIPT_MYANMAR: 'မင်္ဂလာပါ', HB_SCRIPT_HAN: '你好', HB_SCRIPT_HIRAGANA: 'こんにちは',
+                HB_SCRIPT_KATAKANA: 'コンニチハ', HB_SCRIPT_HANGUL: '안녕하세요'
+            };
+            var entries = [];
+            this.scriptFontRows.find('.script-font-row').each(function() {
+                var $row = $(this);
+                var script = $row.find('.script-font-script').val();
+                var font = String($row.find('.script-font-family').val() || '').trim();
+                var size = parseFloat($row.find('.script-font-size').val());
+                if (script && font && size > 0)
+                    entries.push({script: script, font: font, size: size, sample: samples[script] || script});
+            });
+
+            this.scriptFontPreview.empty();
+            var usedScripts = {};
+            this.scriptFontRows.find('.script-font-script').each(function() {
+                var value = $(this).val();
+                value && (usedScripts[value] = true);
+            });
+            this.scriptFontRows.find('.script-font-script').each(function() {
+                var selected = $(this).val();
+                $(this).find('option').each(function() {
+                    var value = $(this).val();
+                    $(this).prop('disabled', !!value && value !== selected && !!usedScripts[value]);
+                });
+            });
+            if (!entries.length) {
+                this.scriptFontPreviewRuleLeft.hide();
+                this.scriptFontPreviewRuleRight.hide();
+                this.scriptFontPreviewPane.css({display: 'block', padding: 0, color: ''});
+                this.scriptFontPreview.css({display: 'block', width: '100%', height: '80px', minHeight: ''});
+                this.api && this.api.SetDrawImagePlaceParagraph('paragraphadv-font-img', this._originalProps || new Asc.asc_CParagraphProperty());
+                return;
+            }
+
+            this.scriptFontPreviewPane.css({
+                display: 'flex', alignItems: 'center', gap: '8px', width: '100%', minHeight: '80px',
+                padding: '8px 12px', boxSizing: 'border-box', color: '#111'
+            });
+            this.scriptFontPreviewRuleLeft.show();
+            this.scriptFontPreviewRuleRight.show();
+            this.scriptFontPreview.css({
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '18px',
+                flex: '0 1 auto', width: 'auto', height: 'auto', minHeight: '62px',
+                overflow: 'hidden', whiteSpace: 'nowrap', color: '#111', opacity: 1
+            });
+            var previewWidth = Math.max(this.scriptFontPreviewPane.width(), 1);
+            var canvas = document.createElement('canvas');
+            var context = canvas.getContext && canvas.getContext('2d');
+            var requiredWidth = 0;
+            _.each(entries, function(entry) {
+                var family = entry.font.replace(/[\\"']/g, '');
+                if (context) {
+                    context.font = entry.size + 'pt "' + family + '"';
+                    requiredWidth += context.measureText(entry.sample).width;
+                } else {
+                    requiredWidth += entry.sample.length * entry.size * 0.75;
+                }
+            });
+            requiredWidth += Math.max(0, entries.length - 1) * 18;
+            var previewScale = Math.min(1, (previewWidth * 0.78) / Math.max(requiredWidth, 1));
+            var ligatureFlags = this.cmbLigatures ? parseInt(this.cmbLigatures.getValue(), 10) : Asc.LigaturesType.None;
+            if (!isFinite(ligatureFlags))
+                ligatureFlags = Asc.LigaturesType.None;
+            var standardLigatures = ligatureFlags & Asc.LigaturesType.Standard ? 1 : 0;
+            var fontFeatures = [
+                '"liga" ' + standardLigatures,
+                '"clig" ' + standardLigatures,
+                '"calt" ' + (ligatureFlags & Asc.LigaturesType.Contextual ? 1 : 0),
+                '"hlig" ' + (ligatureFlags & Asc.LigaturesType.Historical ? 1 : 0),
+                '"dlig" ' + (ligatureFlags & Asc.LigaturesType.Discretional ? 1 : 0)
+            ].join(', ');
+
+            _.each(entries, function(entry) {
+                var $sample = $('<span class="script-font-preview-sample"></span>').text(entry.sample);
+                $sample.css({
+                    fontFamily: '"' + entry.font.replace(/[\\"']/g, '') + '"',
+                    fontSize: (entry.size * previewScale) + 'pt',
+                    fontFeatureSettings: fontFeatures,
+                    color: '#111', opacity: 1, whiteSpace: 'nowrap', flex: '0 0 auto'
+                }).attr('title', entry.font + ' · ' + entry.size + ' pt');
+                this.scriptFontPreview.append($sample);
+            }, this);
+
         },
 
         onTextDirChange: function(field, newValue, eOpts) {
@@ -1548,6 +1877,14 @@ define([
         },
 
         textTitle:      'Paragraph - Advanced Settings',
+        textScriptFonts: 'Font by script',
+        textScriptFontsDescription: 'Choose the font and size for each script. Changes apply to the current selection and text typed afterward.',
+        textScript: 'Script',
+        textFont: 'Font name',
+        textChooseFont: 'Choose font',
+        textFontSize: 'Size (pt)',
+        textChooseScript: 'Choose script',
+        textAddScript: '+ Add script',
         strIndentsLeftText:     'Left',
         strIndentsRightText:    'Right',
         strParagraphIndents:    'Indents & Spacing',

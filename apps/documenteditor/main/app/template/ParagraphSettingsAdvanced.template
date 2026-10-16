@@ -124,6 +124,27 @@
 <div id="id-adv-paragraph-font" class="settings-panel">
     <div class="inner-content" style="width: 100%;">
         <div class="padding-very-small">
+            <label class="header"><%= scope.textScriptFonts %></label>
+        </div>
+        <div class="text-only" style="padding: 0 8px 8px;">
+            <%= scope.textScriptFontsDescription %>
+        </div>
+        <div class="script-font-columns" style="display:grid;grid-template-columns:minmax(90px,1fr) minmax(100px,1.4fr) 68px 28px;gap:6px;padding:4px 0;border-bottom:1px solid #d8d8d8;font-weight:bold;" role="presentation">
+            <span><%= scope.textScript %></span>
+            <span><%= scope.textFont %></span>
+            <span><%= scope.textFontSize %></span>
+            <span></span>
+        </div>
+        <div id="paragraphadv-script-font-rows"></div>
+        <div class="padding-small">
+            <button type="button" class="btn btn-text-default" id="paragraphadv-script-font-add"><%= scope.textAddScript %></button>
+        </div>
+        <div class="doc-content-color" style="outline: 1px solid #cbcbcb;width:100%;min-height:80px;box-sizing:border-box;">
+            <div id="paragraphadv-font-preview-rule-left" style="display:none;flex:1 1 0;min-width:12px;border-top:1px solid #333;"></div>
+            <div id="paragraphadv-font-img" style="width:100%;height:80px;position:relative;margin:0 auto;"></div>
+            <div id="paragraphadv-font-preview-rule-right" style="display:none;flex:1 1 0;min-width:12px;border-top:1px solid #333;"></div>
+        </div>
+        <div class="padding-very-small">
             <label class="header"><%= scope.textEffects %></label>
         </div>
         <table cols="2" role="presentation">
@@ -171,9 +192,6 @@
         <div class="padding-small">
             <label class="input-label vertical-align-baseline"><%= scope.textLigatures %></label>
             <div id="paragraphadv-cmb-ligatures" class="margin-left-5 vertical-align-baseline" style="display: inline-block;"></div>
-        </div>
-        <div class="doc-content-color" style="outline: 1px solid #cbcbcb;">
-            <div id="paragraphadv-font-img" style="width: 300px; height: 80px; position: relative; margin: 0 auto;"></div>
         </div>
     </div>
 </div>

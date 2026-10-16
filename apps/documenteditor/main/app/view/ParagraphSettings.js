@@ -652,6 +652,7 @@ define([
                                             if (me.api) {
                                                 me.borderAdvancedProps = value.borderProps;
                                                 me.api.paraApply(value.paragraphProps);
+                                                me.api.asc_setScriptFontSettings(value.scriptFontSettings || []);
                                             }
                                         }
                                         me.fireEvent('editcomplete', me);
