@@ -3176,6 +3176,8 @@ define([
                 _conf = this.mnuNumbersPicker.conf;
                 this._numbersArr = [
                     '{"Type":"remove"}',
+                    '{"Type":"number","Lvl":[{"lvlJc":"left","suff":"tab","numFmt":{"val":"khmerConsonants"},"lvlText":"%1."}]}',
+                    '{"Type":"number","Lvl":[{"lvlJc":"left","suff":"tab","numFmt":{"val":"khmerNumbers"},"lvlText":"%1."}]}',
                     '{"Type":"number","Lvl":[{"lvlJc":"left","suff":"tab","numFmt":{"val":"upperLetter"},"lvlText":"%1."}]}',
                     '{"Type":"number","Lvl":[{"lvlJc":"left","suff":"tab","numFmt":{"val":"lowerLetter"},"lvlText":"%1)"}]}',
                     '{"Type":"number","Lvl":[{"lvlJc":"left","suff":"tab","numFmt":{"val":"lowerLetter"},"lvlText":"%1."}]}',
@@ -3215,7 +3217,9 @@ define([
                         {id: 'id-numbers-' + Common.UI.getId(), numberingInfo: me._numbersArr[4], skipRenderOnChange: true, group : libGroup, type: 1},
                         {id: 'id-numbers-' + Common.UI.getId(), numberingInfo: me._numbersArr[5], skipRenderOnChange: true, group : libGroup, type: 1},
                         {id: 'id-numbers-' + Common.UI.getId(), numberingInfo: me._numbersArr[6], skipRenderOnChange: true, group : libGroup, type: 1},
-                        {id: 'id-numbers-' + Common.UI.getId(), numberingInfo: me._numbersArr[7], skipRenderOnChange: true, group : libGroup, type: 1}
+                        {id: 'id-numbers-' + Common.UI.getId(), numberingInfo: me._numbersArr[7], skipRenderOnChange: true, group : libGroup, type: 1},
+                        {id: 'id-numbers-' + Common.UI.getId(), numberingInfo: me._numbersArr[8], skipRenderOnChange: true, group : libGroup, type: 1},
+                        {id: 'id-numbers-' + Common.UI.getId(), numberingInfo: me._numbersArr[9], skipRenderOnChange: true, group : libGroup, type: 1}
                     ];
                     presets && presets.forEach(function (item){
                         arr.push({id: 'id-numbers-' + Common.UI.getId(), numberingInfo: JSON.stringify(item), skipRenderOnChange: true, group : libGroup, type: 1});
@@ -3238,6 +3242,8 @@ define([
                     '{"Type":"number","Headings":true,"Lvl":[{"lvlJc":"left","suff":"tab","numFmt":{"val":"decimal"},"lvlText":"%1.","pPr":{"ind":{"left":432,"firstLine":-432}}},{"lvlJc":"left","suff":"tab","numFmt":{"val":"decimal"},"lvlText":"%1.%2.","pPr":{"ind":{"left":576,"firstLine":-576}}},{"lvlJc":"left","suff":"tab","numFmt":{"val":"decimal"},"lvlText":"%1.%2.%3.","pPr":{"ind":{"left":720,"firstLine":-720}}},{"lvlJc":"left","suff":"tab","numFmt":{"val":"decimal"},"lvlText":"%1.%2.%3.%4.","pPr":{"ind":{"left":864,"firstLine":-864}}},{"lvlJc":"left","suff":"tab","numFmt":{"val":"decimal"},"lvlText":"%1.%2.%3.%4.%5.","pPr":{"ind":{"left":1008,"firstLine":-1008}}},{"lvlJc":"left","suff":"tab","numFmt":{"val":"decimal"},"lvlText":"%1.%2.%3.%4.%5.%6.","pPr":{"ind":{"left":1152,"firstLine":-1152}}},{"lvlJc":"left","suff":"tab","numFmt":{"val":"decimal"},"lvlText":"%1.%2.%3.%4.%5.%6.%7.","pPr":{"ind":{"left":1296,"firstLine":-1296}}},{"lvlJc":"left","suff":"tab","numFmt":{"val":"decimal"},"lvlText":"%1.%2.%3.%4.%5.%6.%7.%8.","pPr":{"ind":{"left":1440,"firstLine":-1440}}},{"lvlJc":"left","suff":"tab","numFmt":{"val":"decimal"},"lvlText":"%1.%2.%3.%4.%5.%6.%7.%8.%9.","pPr":{"ind":{"left":1584,"firstLine":-1584}}}]}',
                     '{"Type":"number","Headings":true,"Lvl":[{"lvlJc":"left","suff":"tab","numFmt":{"val":"upperRoman"},"lvlText":"Article %1.","pPr":{"ind":{"left":0,"firstLine":0}}},{"lvlJc":"left","suff":"tab","numFmt":{"val":"decimalZero"},"lvlText":"Section %1.%2","pPr":{"ind":{"left":0,"firstLine":0}}},{"lvlJc":"left","suff":"tab","numFmt":{"val":"lowerLetter"},"lvlText":"(%3)","pPr":{"ind":{"left":720,"firstLine":-432}}},{"lvlJc":"right","suff":"tab","numFmt":{"val":"lowerRoman"},"lvlText":"(%4)","pPr":{"ind":{"left":864,"firstLine":-144}}},{"lvlJc":"left","suff":"tab","numFmt":{"val":"decimal"},"lvlText":"%5)","pPr":{"ind":{"left":1008,"firstLine":-432}}},{"lvlJc":"left","suff":"tab","numFmt":{"val":"lowerLetter"},"lvlText":"%6)","pPr":{"ind":{"left":1152,"firstLine":-432}}},{"lvlJc":"right","suff":"tab","numFmt":{"val":"lowerRoman"},"lvlText":"%7)","pPr":{"ind":{"left":1296,"firstLine":-288}}},{"lvlJc":"left","suff":"tab","numFmt":{"val":"lowerLetter"},"lvlText":"%8.","pPr":{"ind":{"left":1440,"firstLine":-432}}},{"lvlJc":"right","suff":"tab","numFmt":{"val":"lowerRoman"},"lvlText":"%9.","pPr":{"ind":{"left":1584,"firstLine":-144}}}]}',
                     '{"Type":"number","Headings":true,"Lvl":[{"lvlJc":"left","suff":"space","numFmt":{"val":"decimal"},"lvlText":"Chapter %1","pPr":{"ind":{"left":0,"firstLine":0}}},{"lvlJc":"left","suff":"nothing","numFmt":{"val":"none"},"lvlText":"","pPr":{"ind":{"left":0,"firstLine":0}}},{"lvlJc":"left","suff":"nothing","numFmt":{"val":"none"},"lvlText":"","pPr":{"ind":{"left":0,"firstLine":0}}},{"lvlJc":"left","suff":"nothing","numFmt":{"val":"none"},"lvlText":"","pPr":{"ind":{"left":0,"firstLine":0}}},{"lvlJc":"left","suff":"nothing","numFmt":{"val":"none"},"lvlText":"","pPr":{"ind":{"left":0,"firstLine":0}}},{"lvlJc":"left","suff":"nothing","numFmt":{"val":"none"},"lvlText":"","pPr":{"ind":{"left":0,"firstLine":0}}},{"lvlJc":"left","suff":"nothing","numFmt":{"val":"none"},"lvlText":"","pPr":{"ind":{"left":0,"firstLine":0}}},{"lvlJc":"left","suff":"nothing","numFmt":{"val":"none"},"lvlText":"","pPr":{"ind":{"left":0,"firstLine":0}}},{"lvlJc":"left","suff":"nothing","numFmt":{"val":"none"},"lvlText":"","pPr":{"ind":{"left":0,"firstLine":0}}}]}',
+                    '{"Type":"number","Lvl":[{"lvlJc":"left","suff":"tab","numFmt":{"val":"khmerNumbers"},"lvlText":"%1."},{"lvlJc":"left","suff":"tab","numFmt":{"val":"khmerConsonants"},"lvlText":"%1.%2"}]}',
+                    '{"Type":"number","Lvl":[{"lvlJc":"left","suff":"tab","numFmt":{"val":"khmerConsonants"},"lvlText":"%1."},{"lvlJc":"left","suff":"tab","numFmt":{"val":"khmerNumbers"},"lvlText":"%1.%2"}]}'
                 ];
 
                 this.mnuMultilevelPicker = new Common.UI.DataView({
@@ -3263,7 +3269,9 @@ define([
                         {id: 'id-multilevels-' + Common.UI.getId(), numberingInfo: me._multilevelArr[2], skipRenderOnChange: true, group : libGroup, type: 1},
                         {id: 'id-multilevels-' + Common.UI.getId(), numberingInfo: me._multilevelArr[3], skipRenderOnChange: true, group : libGroup, type: 1},
                         {id: 'id-multilevels-' + Common.UI.getId(), numberingInfo: me._multilevelArr[4], skipRenderOnChange: true, group : libGroup, type: 1},
-                        {id: 'id-multilevels-' + Common.UI.getId(), numberingInfo: me._multilevelArr[5], skipRenderOnChange: true, group : libGroup, type: 1}
+                        {id: 'id-multilevels-' + Common.UI.getId(), numberingInfo: me._multilevelArr[5], skipRenderOnChange: true, group : libGroup, type: 1},
+                        {id: 'id-multilevels-' + Common.UI.getId(), numberingInfo: me._multilevelArr[8], skipRenderOnChange: true, group : libGroup, type: 1},
+                        {id: 'id-multilevels-' + Common.UI.getId(), numberingInfo: me._multilevelArr[9], skipRenderOnChange: true, group : libGroup, type: 1}
                     ];
                     if (presets)
                         presets.forEach(function (item){

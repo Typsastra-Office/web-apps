@@ -340,7 +340,9 @@ define([
                 { displayValue: 'a, b, c,...',      value: Asc.c_oAscNumberingFormat.LowerLetter },
                 { displayValue: 'A, B, C,...',      value: Asc.c_oAscNumberingFormat.UpperLetter },
                 { displayValue: 'i, ii, iii,...',   value: Asc.c_oAscNumberingFormat.LowerRoman },
-                { displayValue: 'I, II, III,...',   value: Asc.c_oAscNumberingFormat.UpperRoman }
+                { displayValue: 'I, II, III,...',   value: Asc.c_oAscNumberingFormat.UpperRoman },
+                { displayValue: '១, ២, ៣,...',      value: Asc.c_oAscNumberingFormat.KhmerNumbers },
+                { displayValue: 'ក, ខ, គ,...',      value: Asc.c_oAscNumberingFormat.KhmerConsonants }
             ];
             if (Common.Locale.getDefaultLanguage() === 'ru') {
                 this._arrNumbers = this._arrNumbers.concat([
